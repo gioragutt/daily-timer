@@ -1,8 +1,12 @@
 package giorag.dailytimer;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,8 +16,80 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static final String CMD_PLAY = "{cmd-play}";
+    public static final String CMD_REPLAY = "{cmd-replay}";
+    public static final String CMD_PAUSE = "{cmd-pause}";
+    public static final String CMD_STOP = "{cmd-stop}";
+
+    enum RunningState {
+        Running {
+            @Override
+            public void restore(MainActivity activity) {
+                activity.onStartClick();
+            }
+
+        },
+        Paused {
+            @Override
+            public void restore(MainActivity activity) {
+                activity.onPauseClick();
+            }
+        },
+        Default {
+            @Override
+            public void restore(MainActivity activity) {
+                activity.onResetClick();
+            }
+        };
+
+        public abstract void restore(MainActivity activity);
+    }
+
+    Time defaultTime;
+    Button pause;
+    Button start;
+    TextView timer;
+
+    SharedPreferences preferences;
+    DailyCountdown countdown;
+
+    RunningState runningState;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        log("onSaveInstanceState");
+        outState.putLong("remaining", countdown.getRemaining());
+        outState.putLong("interval", countdown.getInterval());
+        outState.putString("runningState", runningState.toString());
+        log("onSaveInstanceState - remaining " + countdown.getRemaining());
+        log("onSaveInstanceState - interval " + countdown.getInterval());
+        log("onSaveInstanceState - runningState " + runningState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        log("onRestoreInstanceState");
+        long remaining = savedInstanceState.getLong("remaining");
+        long interval = savedInstanceState.getLong("interval");
+        RunningState runningState = RunningState.valueOf(savedInstanceState.getString("runningState"));
+
+        log("onRestoreInstanceState - remaining " + remaining);
+        log("onRestoreInstanceState - interval " + interval);
+        log("onRestoreInstanceState - runningState " + runningState);
+
+        this.runningState = runningState;
+        resetCountdown(runningState, remaining, interval);
+        runningState.restore(this);
+        setTimerText(Time.fromLong(remaining));
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,14 +98,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -37,6 +105,201 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        initializeSettings();
+
+        pause = (Button)findViewById(R.id.main_pause);
+        start = (Button)findViewById(R.id.main_start);
+        timer = (TextView)findViewById(R.id.main_timer);
+
+        runningState = RunningState.Default;
+
+        initializeViews();
+    }
+
+    private void setStartButton(boolean enabled) {
+        start.setText(CMD_PLAY);
+        start.setEnabled(enabled);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onStartClick();
+            }
+        });
+    }
+
+    private void onStartClick() {
+        log("Pressed START!");
+        countdown.start();
+        runningState = RunningState.Running;
+        start.setEnabled(false);
+        setPauseButton(true);
+    }
+
+    private void setResumeButton(boolean enabled) {
+        start.setText(CMD_REPLAY);
+        start.setEnabled(enabled);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onResumeClick();
+            }
+        });
+    }
+
+    private void onResumeClick() {
+        log("Pressed RESUME!");
+        runningState = RunningState.Running;
+        resetCountdown(true);
+        start.setEnabled(false);
+        setPauseButton(true);
+    }
+
+    private void setPauseButton(boolean enabled) {
+        pause.setText(CMD_PAUSE);
+        pause.setEnabled(enabled);
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPauseClick();
+            }
+        });
+    }
+
+    private void onPauseClick() {
+        log("Pressed PAUSE!");
+        runningState = RunningState.Paused;
+        resetCountdown(false);
+        setResumeButton(true);
+        setResetButton(true);
+    }
+
+    private void setResetButton(boolean enabled) {
+        pause.setText(CMD_STOP);
+        pause.setEnabled(enabled);
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onResetClick();
+            }
+        });
+    }
+
+    private void onResetClick() {
+        log("Pressed RESET!");
+        initializeViews();
+        runningState = RunningState.Default;
+    }
+
+    private void initializeSettings() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int peopleAmount = Integer.parseInt(preferences.getString("people_amount", "4"));
+        int speakingTime = Integer.parseInt(preferences.getString("speaking_time", "30"));
+        int transitionBuffer = Integer.parseInt(preferences.getString("transition_buffer", "0"));
+        int transitionBufferTime = Integer.parseInt(preferences.getString("transition_buffer_time", "5"));
+
+        long totalTime = peopleAmount * speakingTime;
+        switch (transitionBuffer) {
+            case 0: {
+                totalTime += transitionBufferTime;
+                break;
+            }
+            case 1: {
+                totalTime += transitionBufferTime * peopleAmount;
+                break;
+            }
+            default: break;
+        }
+
+        totalTime *= 1000;
+        defaultTime = Time.fromLong(totalTime);
+    }
+
+    private void log(String message) {
+        Log.i("Daily-Timer", message);
+    }
+
+    private void setTimerText(Time time) {
+        String seconds = "" + time.second;
+        if (time.second < 10)
+            seconds = "0" + seconds;
+        timer.setText(time.minute + ":" + seconds);
+    }
+
+    private void resetCountdown(boolean startOnReset) {
+        RunningState state = startOnReset ? RunningState.Running : RunningState.Default;
+        resetCountdown(state, countdown.getRemaining(), countdown.getInterval());
+    }
+
+    private void resetCountdown(RunningState runningState, long remaining, long interval) {
+        countdown.cancel();
+        countdown = new DailyCountdown(Time.fromLong(remaining), interval);
+        if (runningState == RunningState.Running)
+            countdown.start();
+    }
+
+    public void initializeViews() {
+        if (countdown != null)
+            countdown.cancel();
+        countdown = new DailyCountdown(defaultTime, 100);
+        setTimerText(defaultTime);
+        runningState = RunningState.Default;
+        setStartButton(true);
+        setPauseButton(false);
+    }
+
+    public void launchSettings(MenuItem item) {
+        Intent settings = new Intent(this, SettingsActivity.class);
+        startActivity(settings);
+    }
+
+    private void showDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        TeamNamesEditDialog editNamesDialog = new TeamNamesEditDialog();
+        editNamesDialog.show(fm, "fragment_edit_names");
+    }
+
+    class DailyCountdown extends CountDownTimer {
+
+        public long getRemaining() {
+            return remaining;
+        }
+
+        public long getInterval() {
+            return interval;
+        }
+
+        private long remaining;
+        private long interval;
+
+        public DailyCountdown(Time time, long interval) {
+            super(time.toLong(), interval);
+
+            this.remaining = time.toLong();
+            this.interval = interval;
+        }
+
+        @Override
+        public void onTick(long remaining) {
+            setTimerText(Time.fromLong(remaining));
+            this.remaining = remaining;
+        }
+
+        @Override
+        public void onFinish() {
+            timer.setText("Done!");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(runningState == RunningState.Default) {
+            initializeSettings();
+            initializeViews();
+        }
     }
 
     @Override
@@ -44,7 +307,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else {
             super.onBackPressed();
         }
     }
@@ -78,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            showDialog();
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -95,4 +359,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+}
+
+class Time
+{
+    long minute;
+    long second;
+    long milli;
+
+    public Time(long minute, long second, long milli) {
+        this.minute = minute;
+        this.second = second;
+        this.milli = milli;
+    }
+
+    public long toLong() {
+        return (second + 60 * minute) * 1000 + milli;
+    }
+
+    public static Time fromLong(long value) {
+        long millis = value % 1000;
+        long seconds = value / 1000;
+        long minutes = seconds / 60;
+        seconds %= 60;
+        return new Time(minutes, seconds, millis);
+    }
+
 }

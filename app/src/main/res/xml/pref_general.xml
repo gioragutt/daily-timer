@@ -1,0 +1,39 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@integer/pref_default_people_amount"
+        android:inputType="numberDecimal"
+        android:key="people_amount"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_people_amount"/>
+
+    <EditTextPreference
+        android:defaultValue="@integer/pref_default_speaking_time"
+        android:inputType="numberDecimal"
+        android:key="speaking_time"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_speaking_time"/>
+
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/pref_transition_buffers_titles"
+        android:entryValues="@array/pref_transition_buffers_values"
+        android:key="transition_buffer"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_transition_buffers"/>
+
+    <EditTextPreference
+        android:defaultValue="@integer/pref_default_transition_buffer_time"
+        android:inputType="numberDecimal"
+        android:key="transition_buffer_time"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_transition_buffer_time"/>
+</PreferenceScreen>
