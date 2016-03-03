@@ -18,14 +18,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import java.util.ArrayList;
+
+import giorag.dailytimer.modals.Person;
+import giorag.dailytimer.modals.Time;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        TeamNamesEditDialogListener {
 
     public static final String CMD_PLAY = "{cmd-play}";
     public static final String CMD_REPLAY = "{cmd-replay}";
     public static final String CMD_PAUSE = "{cmd-pause}";
     public static final String CMD_STOP = "{cmd-stop}";
+
+    @Override
+    public void onPersonsListUpdate(ArrayList<Person> people) {
+        this.people = people;
+        int peopleAmount = 0;
+        for (Person p : people) {
+            if (p.available) {
+                peopleAmount++;
+            }
+        }
+
+        initializeTimerTime(peopleAmount);
+        initializeViews();
+    }
 
     enum RunningState {
         Running {
@@ -55,10 +74,11 @@ public class MainActivity extends AppCompatActivity
     Button pause;
     Button start;
     TextView timer;
+    TinyDB db;
 
     SharedPreferences preferences;
     DailyCountdown countdown;
-
+    ArrayList<Person> people;
     RunningState runningState;
 
     @Override
@@ -107,6 +127,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        db = new TinyDB(this);
         initializeSettings();
 
         pause = (Button)findViewById(R.id.main_pause);
@@ -193,8 +214,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeSettings() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int peopleAmount = Integer.parseInt(preferences.getString("people_amount", "4"));
+        people = new ArrayList<>();
+        int peopleAmount = 0;
+
+        try {
+            ArrayList<Object> objects = db.getListObject(TeamNamesEditDialog.PEOPLE, Person.class);
+            for (Object obj : objects) {
+                Person p = (Person) obj;
+                people.add(p);
+                if (p.available) {
+                    peopleAmount++;
+                }
+            }
+        }
+        catch (NullPointerException e) {
+            peopleAmount = Integer.parseInt(preferences.getString("people_amount", "4"));
+        }
+
+        initializeTimerTime(peopleAmount);
+    }
+
+    private void initializeTimerTime(int peopleAmount) {
         int speakingTime = Integer.parseInt(preferences.getString("speaking_time", "30"));
         int transitionBuffer = Integer.parseInt(preferences.getString("transition_buffer", "0"));
         int transitionBufferTime = Integer.parseInt(preferences.getString("transition_buffer_time", "5"));
@@ -361,28 +401,3 @@ public class MainActivity extends AppCompatActivity
     }
 }
 
-class Time
-{
-    long minute;
-    long second;
-    long milli;
-
-    public Time(long minute, long second, long milli) {
-        this.minute = minute;
-        this.second = second;
-        this.milli = milli;
-    }
-
-    public long toLong() {
-        return (second + 60 * minute) * 1000 + milli;
-    }
-
-    public static Time fromLong(long value) {
-        long millis = value % 1000;
-        long seconds = value / 1000;
-        long minutes = seconds / 60;
-        seconds %= 60;
-        return new Time(minutes, seconds, millis);
-    }
-
-}

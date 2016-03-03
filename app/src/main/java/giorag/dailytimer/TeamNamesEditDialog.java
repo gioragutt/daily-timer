@@ -1,5 +1,6 @@
 package giorag.dailytimer;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,13 +18,9 @@ import java.util.Collections;
 
 import giorag.dailytimer.modals.Person;
 
-/**
- * Created by GioraPC on 01/03/2016.
- */
 public class TeamNamesEditDialog extends DialogFragment {
 
     public static final String PEOPLE = "people";
-    public static final String STATE = "state";
     private EditText personName;
     private RecyclerView namesList;
     private ImageButton addName;
@@ -33,10 +30,24 @@ public class TeamNamesEditDialog extends DialogFragment {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        db.putListObject(PEOPLE, new ArrayList<Object>(adapter.people));
+        savePeopleList();
     }
 
     public TeamNamesEditDialog() {
+    }
+
+    private void updateParent() {
+        TeamNamesEditDialogListener listener = (TeamNamesEditDialogListener)getActivity();
+        listener.onPersonsListUpdate(adapter.people);
+    }
+
+    private void savePeopleList() {
+        db.putListObject(PEOPLE, new ArrayList<Object>(adapter.people));
+    }
+
+    private void update() {
+        savePeopleList();
+        updateParent();
     }
 
     @Override
@@ -115,12 +126,14 @@ public class TeamNamesEditDialog extends DialogFragment {
 
             people.add(new Person(name, true));
             notifyDataSetChanged();
+            update();
         }
 
         @Override
         public void onItemDismiss(int position) {
             people.remove(position);
             notifyItemRemoved(position);
+            update();
         }
 
         @Override
@@ -150,20 +163,18 @@ public class TeamNamesEditDialog extends DialogFragment {
             for (Person p : people) {
                 if (p.name.equals(name)) {
                     p.available = ctv.isChecked();
+                    update();
                     return;
                 }
             }
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-
             CheckedTextView name;
-
             public ViewHolder(View itemView) {
                 super(itemView);
 
                 name = (CheckedTextView)itemView.findViewById(R.id.name_in_list);
-
                 name.setOnClickListener(TeamNamesAdapter.this);
             }
         }
