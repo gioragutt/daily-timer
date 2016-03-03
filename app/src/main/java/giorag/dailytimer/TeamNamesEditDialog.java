@@ -15,21 +15,25 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import giorag.dailytimer.modals.Person;
+
 /**
  * Created by GioraPC on 01/03/2016.
  */
 public class TeamNamesEditDialog extends DialogFragment {
 
+    public static final String PEOPLE = "people";
     public static final String STATE = "state";
     private EditText personName;
     private RecyclerView namesList;
     private ImageButton addName;
     private TeamNamesAdapter adapter;
+    private TinyDB db;
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putBundle(STATE, adapter.getInstanceState());
+        db.putListObject(PEOPLE, new ArrayList<Object>(adapter.people));
     }
 
     public TeamNamesEditDialog() {
@@ -44,13 +48,11 @@ public class TeamNamesEditDialog extends DialogFragment {
         namesList.setLayoutManager(new LinearLayoutManager(getContext()));
         addName = (ImageButton) view.findViewById(R.id.team_names_add_name);
 
+        db = new TinyDB(getActivity());
+
         getDialog().setTitle("Update team");
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(STATE))
-            adapter = new TeamNamesAdapter(savedInstanceState.getBundle(STATE));
-        else
-            adapter = new TeamNamesAdapter(null);
-
+        adapter = new TeamNamesAdapter(db);
         namesList.setAdapter(adapter);
         namesList.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         addName.setOnClickListener(new View.OnClickListener() {
@@ -72,42 +74,19 @@ public class TeamNamesEditDialog extends DialogFragment {
     class TeamNamesAdapter extends RecyclerView.Adapter<TeamNamesAdapter.ViewHolder>
             implements ItemTouchHelperAdapter, View.OnClickListener {
 
-        private final String PEOPLE_EXTRA = "PEOPLE";
-        private final String AVAILABILITIES_EXTRA = "AVAILABILITIES";
+        private ArrayList<Person> people;
 
-        private ArrayList<String> people;
-        private ArrayList<Boolean> availabilities;
-
-        public Bundle getInstanceState() {
-            Bundle state = new Bundle();
-            state.putStringArrayList(PEOPLE_EXTRA, people);
-            boolean[] availabilitiesArray = new boolean[availabilities.size()];
-            for (int i = 0; i < availabilitiesArray.length; ++i) {
-                availabilitiesArray[i] = availabilities.get(i);
+        public TeamNamesAdapter(TinyDB db) {
+            people = new ArrayList<>();
+            try {
+                ArrayList<Object> objects = db.getListObject(PEOPLE, Person.class);
+                for (Object obj : objects) {
+                    people.add((Person) obj);
+                }
             }
-            state.putBooleanArray(AVAILABILITIES_EXTRA, availabilitiesArray);
-
-            return state;
-        }
-
-        private void initializeFromPreviousState(Bundle bundle) {
-            if (bundle == null || !bundle.containsKey(PEOPLE_EXTRA) || !bundle.containsKey(AVAILABILITIES_EXTRA)) {
-                people = new ArrayList<>();
-                availabilities = new ArrayList<>();
+            catch (NullPointerException e) {
                 return;
             }
-
-            people = bundle.getStringArrayList(PEOPLE_EXTRA);
-            availabilities = new ArrayList<>();
-            boolean[] availabilitiesArray = bundle.getBooleanArray(AVAILABILITIES_EXTRA);
-
-            for(int i = 0; i < availabilitiesArray.length; ++i) {
-                availabilities.add(availabilitiesArray[i]);
-            }
-        }
-
-        public TeamNamesAdapter(Bundle bundle) {
-            initializeFromPreviousState(bundle);
         }
 
         @Override
@@ -120,8 +99,9 @@ public class TeamNamesEditDialog extends DialogFragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.name.setText(people.get(position));
-            holder.name.setChecked(availabilities.get(position));
+            Person curr = people.get(position);
+            holder.name.setText(curr.name);
+            holder.name.setChecked(curr.available);
         }
 
         @Override
@@ -133,8 +113,7 @@ public class TeamNamesEditDialog extends DialogFragment {
             if(people.contains(name) || name.isEmpty())
                 return;
 
-            people.add(name);
-            availabilities.add(true);
+            people.add(new Person(name, true));
             notifyDataSetChanged();
         }
 
@@ -149,13 +128,11 @@ public class TeamNamesEditDialog extends DialogFragment {
             if (fromPosition < toPosition) {
                 for (int i = fromPosition; i < toPosition; i++) {
                     Collections.swap(people, i, i + 1);
-                    Collections.swap(availabilities, i, i + 1);
                 }
             }
             else {
                 for (int i = fromPosition; i > toPosition; i--) {
                     Collections.swap(people, i, i - 1);
-                    Collections.swap(availabilities, i, i - 1);
                 }
             }
             notifyItemMoved(fromPosition, toPosition);
@@ -163,11 +140,18 @@ public class TeamNamesEditDialog extends DialogFragment {
 
         @Override
         public void onClick(View v) {
-            if (v instanceof CheckedTextView) {
-                CheckedTextView ctv =(CheckedTextView) v;
-                ctv.toggle();
-                int index = people.indexOf(ctv.getText());
-                availabilities.set(index, ctv.isChecked());
+            if (!(v instanceof CheckedTextView))
+                return;
+
+            CheckedTextView ctv = (CheckedTextView) v;
+            ctv.toggle();
+
+            String name = ctv.getText().toString();
+            for (Person p : people) {
+                if (p.name.equals(name)) {
+                    p.available = ctv.isChecked();
+                    return;
+                }
             }
         }
 
