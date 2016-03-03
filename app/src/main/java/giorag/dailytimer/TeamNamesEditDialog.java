@@ -100,6 +100,7 @@ public class TeamNamesEditDialog extends DialogFragment {
             people = bundle.getStringArrayList(PEOPLE_EXTRA);
             availabilities = new ArrayList<>();
             boolean[] availabilitiesArray = bundle.getBooleanArray(AVAILABILITIES_EXTRA);
+
             for(int i = 0; i < availabilitiesArray.length; ++i) {
                 availabilities.add(availabilitiesArray[i]);
             }
