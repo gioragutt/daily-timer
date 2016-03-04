@@ -1,4 +1,4 @@
-package giorag.dailytimer;
+package giorag.dailytimer.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

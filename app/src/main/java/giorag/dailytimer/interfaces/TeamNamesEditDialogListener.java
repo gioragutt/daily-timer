@@ -1,4 +1,4 @@
-package giorag.dailytimer;
+package giorag.dailytimer.interfaces;
 
 import java.util.ArrayList;
 

@@ -27,10 +27,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b813c4d7-6448-42f1-8627-4e2911390b9a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/SettingsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/SettingsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/xml/pref_general.xml" afterPath="$PROJECT_DIR$/app/src/main/res/xml/pref_general.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/SimpleItemTouchHelperCallback.java" afterPath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/SimpleItemTouchHelperCallback.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/app_bar_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/app_bar_main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout-land/content_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout-land/content_main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/xml/pref_headers.xml" afterPath="$PROJECT_DIR$/app/src/main/res/xml/pref_headers.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="D:\Repositories\daily-timer\app\src\main\java\giorag\dailytimer\AppCompatPreferenceActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/activities/AppCompatPreferenceActivity.java" />
+      <change type="MOVED" beforePath="D:\Repositories\daily-timer\app\src\main\java\giorag\dailytimer\ItemTouchHelperAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/interfaces/ItemTouchHelperAdapter.java" />
+      <change type="MOVED" beforePath="D:\Repositories\daily-timer\app\src\main\java\giorag\dailytimer\MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/activities/MainActivity.java" />
+      <change type="MOVED" beforePath="D:\Repositories\daily-timer\app\src\main\java\giorag\dailytimer\SettingsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/activities/SettingsActivity.java" />
+      <change type="MOVED" beforePath="D:\Repositories\daily-timer\app\src\main\java\giorag\dailytimer\TeamNamesEditDialog.java" afterPath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/activities/TeamNamesEditDialog.java" />
+      <change type="MOVED" beforePath="D:\Repositories\daily-timer\app\src\main\java\giorag\dailytimer\TeamNamesEditDialogListener.java" afterPath="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/interfaces/TeamNamesEditDialogListener.java" />
     </list>
     <ignored path="Daily Timer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -58,113 +67,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5">
-              <caret line="225" column="11" selection-start-line="225" selection-start-column="11" selection-end-line="225" selection-end-column="11" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="class#RunningState#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onStartClick#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#setResumeButton#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onResumeClick#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#setPauseButton#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onPauseClick#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#setResetButton#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onResetClick#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#resetCountdown#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#resetCountdown#1;class#MainActivity#0" expanded="false" />
-                <element signature="method#launchSettings#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#showDialog#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#DailyCountdown#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onResume#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onBackPressed#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#onNavigationItemSelected#0;class#MainActivity#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SettingsActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/SettingsActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-23.5">
-              <caret line="182" column="23" selection-start-line="182" selection-start-column="23" selection-end-line="182" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pref_general.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/pref_general.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="77" selection-start-line="0" selection-start-column="77" selection-end-line="0" selection-end-column="77" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Time.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/modals/Time.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TeamNamesEditDialog.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/TeamNamesEditDialog.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Person.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/modals/Person.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleItemTouchHelperCallback.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/SimpleItemTouchHelperCallback.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="61" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ItemTouchHelperAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/ItemTouchHelperAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="41" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="team_names_list_item.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/team_names_list_item.xml">
+      <file leaf-file-name="activity_main.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
           <provider editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
+              <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -173,13 +80,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/build.gradle">
-          <provider selected="true" editor-type-id="text-editor">
+      <file leaf-file-name="content_main.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_main.xml">
+          <provider editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+              <caret line="66" column="40" selection-start-line="66" selection-start-column="40" selection-end-line="66" selection-end-column="40" />
               <folding />
             </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -1782,7 +1692,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/integers.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-land/content_main.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/nav_header_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/TeamNamesFragment.java" />
@@ -1801,7 +1710,10 @@
         <option value="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/modals/Time.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/SettingsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/xml/pref_general.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/RunningState.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/DailyCountdown.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" />
       </list>
     </option>
   </component>
@@ -1816,9 +1728,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="width" value="1932" />
-    <option name="height" value="1038" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -2031,8 +1944,22 @@
               <option name="myItemId" value="res" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="xml" />
+              <option name="myItemId" value="Daily Timer" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2048,6 +1975,32 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="res" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="content_main.xml" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResGroupNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Daily Timer" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dailytimer" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -2278,7 +2231,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="0" width="1932" height="1038" extended-state="0" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942098" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2289,16 +2242,16 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3384434" sideWeight="0.7456989" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33449882" sideWeight="0.7459807" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32665095" sideWeight="0.4870968" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942098" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3384434" sideWeight="0.25430107" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33449882" sideWeight="0.2540193" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24731183" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24651662" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -2358,30 +2311,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="5" />
+      <option name="time" value="6" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/activity_main_drawer.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2400,29 +2334,43 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/activities/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="51" column="8" selection-start-line="51" selection-start-column="8" selection-end-line="51" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="class#RunningState#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onStartClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#setResumeButton#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onResumeClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#setPauseButton#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onPauseClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#setResetButton#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onResetClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#resetCountdown#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#resetCountdown#1;class#MainActivity#0" expanded="false" />
-            <element signature="method#launchSettings#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#showDialog#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#DailyCountdown#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onSaveInstanceState#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onRestoreInstanceState#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onCreate#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#3762#3793#0" expanded="true" />
+            <element signature="e#3795#3827#0" expanded="true" />
             <element signature="method#onResume#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onBackPressed#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setStartButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#5832#5980#0" expanded="true" />
+            <element signature="e#5979#5980#0" expanded="true" />
+            <element signature="method#onStartClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setResumeButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#6351#6500#0" expanded="true" />
+            <element signature="e#6499#6500#0" expanded="true" />
+            <element signature="method#onResumeClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setPauseButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#6874#7022#0" expanded="true" />
+            <element signature="e#7021#7022#0" expanded="true" />
+            <element signature="method#onPauseClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setResetButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#7391#7539#0" expanded="true" />
+            <element signature="e#7538#7539#0" expanded="true" />
+            <element signature="method#onResetClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#initializeSettings#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#initializeTimerTime#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setTimerText#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#resetCountdown#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#launchSettings#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#showDialog#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onNavigationItemSelected#0;class#MainActivity#0" expanded="false" />
           </folding>
         </state>
@@ -2487,29 +2435,43 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/activities/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="class#RunningState#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onStartClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#setResumeButton#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onResumeClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#setPauseButton#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onPauseClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#setResetButton#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onResetClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#resetCountdown#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#resetCountdown#1;class#MainActivity#0" expanded="false" />
-            <element signature="method#launchSettings#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#showDialog#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#DailyCountdown#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onSaveInstanceState#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onRestoreInstanceState#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onCreate#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#3762#3793#0" expanded="true" />
+            <element signature="e#3795#3827#0" expanded="true" />
             <element signature="method#onResume#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onBackPressed#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setStartButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#5832#5980#0" expanded="true" />
+            <element signature="e#5979#5980#0" expanded="true" />
+            <element signature="method#onStartClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setResumeButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#6351#6500#0" expanded="true" />
+            <element signature="e#6499#6500#0" expanded="true" />
+            <element signature="method#onResumeClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setPauseButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#6874#7022#0" expanded="true" />
+            <element signature="e#7021#7022#0" expanded="true" />
+            <element signature="method#onPauseClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setResetButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#7391#7539#0" expanded="true" />
+            <element signature="e#7538#7539#0" expanded="true" />
+            <element signature="method#onResetClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#initializeSettings#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#initializeTimerTime#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setTimerText#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#resetCountdown#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#launchSettings#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#showDialog#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onNavigationItemSelected#0;class#MainActivity#0" expanded="false" />
           </folding>
         </state>
@@ -2579,17 +2541,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.235294">
-          <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/app_bar_main.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-18.764706">
@@ -2653,7 +2604,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/AppCompatPreferenceActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/activities/AppCompatPreferenceActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.57462686">
           <caret line="39" column="49" selection-start-line="39" selection-start-column="49" selection-end-line="39" selection-end-column="49" />
@@ -2700,17 +2651,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="40" selection-start-line="39" selection-start-column="40" selection-end-line="39" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://D:/Android/sdk/platforms/android-23/data/res/values/attrs.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.56390977">
@@ -2734,18 +2674,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_team_names.xml">
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="49" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/ItemTouchHelperAdapter.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/interfaces/ItemTouchHelperAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="41" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
@@ -2757,34 +2686,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="61" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/team_names_list_item.xml">
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/modals/Person.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#442#443#0" expanded="false" />
+            <element signature="e#480#481#0" expanded="false" />
+            <element signature="e#541#542#0" expanded="false" />
+            <element signature="e#568#569#0" expanded="false" />
+            <element signature="e#629#630#0" expanded="false" />
+            <element signature="e#656#657#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2807,35 +2717,78 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/TeamNamesEditDialogListener.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/interfaces/TeamNamesEditDialogListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.125">
           <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/modals/Time.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/TeamNamesEditDialog.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/enums/RunningState.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <caret line="4" column="12" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/activities/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="295" column="18" selection-start-line="295" selection-start-column="18" selection-end-line="295" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#onSaveInstanceState#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onRestoreInstanceState#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onCreate#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#3762#3793#0" expanded="true" />
+            <element signature="e#3795#3827#0" expanded="true" />
+            <element signature="method#onResume#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onBackPressed#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setStartButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#5832#5980#0" expanded="true" />
+            <element signature="e#5979#5980#0" expanded="true" />
+            <element signature="method#onStartClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setResumeButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#6351#6500#0" expanded="true" />
+            <element signature="e#6499#6500#0" expanded="true" />
+            <element signature="method#onResumeClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setPauseButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#6874#7022#0" expanded="true" />
+            <element signature="e#7021#7022#0" expanded="true" />
+            <element signature="method#onPauseClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setResetButton#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#7391#7539#0" expanded="true" />
+            <element signature="e#7538#7539#0" expanded="true" />
+            <element signature="method#onResetClick#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#initializeSettings#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#initializeTimerTime#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setTimerText#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#resetCountdown#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#launchSettings#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#showDialog#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onNavigationItemSelected#0;class#MainActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/DailyCountdown.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.67286247">
+          <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/SettingsActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/activities/SettingsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-23.5">
-          <caret line="182" column="23" selection-start-line="182" selection-start-column="23" selection-end-line="182" selection-end-column="23" />
+        <state vertical-scroll-proportion="1.685259">
+          <caret line="183" column="23" selection-start-line="183" selection-start-column="23" selection-end-line="183" selection-end-column="23" />
           <folding />
         </state>
       </provider>
@@ -2848,32 +2801,82 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/modals/Time.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5">
-          <caret line="225" column="11" selection-start-line="225" selection-start-column="11" selection-end-line="225" selection-end-column="11" />
+        <state vertical-scroll-proportion="0.38847584">
+          <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/activities/TeamNamesEditDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.9256506">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="class#RunningState#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onStartClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#setResumeButton#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onResumeClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#setPauseButton#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onPauseClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#setResetButton#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onResetClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#resetCountdown#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#resetCountdown#1;class#MainActivity#0" expanded="false" />
-            <element signature="method#launchSettings#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#showDialog#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#DailyCountdown#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onResume#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onBackPressed#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onNavigationItemSelected#0;class#MainActivity#0" expanded="false" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/giorag/dailytimer/modals/Person.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24535316">
+          <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/team_names_list_item.xml">
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.67286247">
+          <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_team_names.xml">
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="49" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_main.xml">
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="66" column="40" selection-start-line="66" selection-start-column="40" selection-end-line="66" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
   </component>

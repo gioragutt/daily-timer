@@ -1,6 +1,5 @@
-package giorag.dailytimer;
+package giorag.dailytimer.activities;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +15,12 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import giorag.dailytimer.DividerItemDecoration;
+import giorag.dailytimer.interfaces.ItemTouchHelperAdapter;
+import giorag.dailytimer.R;
+import giorag.dailytimer.SimpleItemTouchHelperCallback;
+import giorag.dailytimer.interfaces.TeamNamesEditDialogListener;
+import giorag.dailytimer.TinyDB;
 import giorag.dailytimer.modals.Person;
 
 public class TeamNamesEditDialog extends DialogFragment {

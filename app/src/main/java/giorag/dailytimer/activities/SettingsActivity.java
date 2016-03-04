@@ -1,10 +1,9 @@
-package giorag.dailytimer;
+package giorag.dailytimer.activities;
 
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -23,6 +22,8 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 import java.util.List;
+
+import giorag.dailytimer.R;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On

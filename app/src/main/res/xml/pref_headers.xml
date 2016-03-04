@@ -3,12 +3,12 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="giorag.dailytimer.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="giorag.dailytimer.activities.SettingsActivity$GeneralPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_general"/>
 
     <header
-        android:fragment="giorag.dailytimer.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="giorag.dailytimer.activities.SettingsActivity$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_notifications"/>
 

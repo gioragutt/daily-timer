@@ -1,4 +1,4 @@
-package giorag.dailytimer;
+package giorag.dailytimer.interfaces;
 
 /**
  * Created by GioraPC on 02/03/2016.

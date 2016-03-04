@@ -3,6 +3,8 @@ package giorag.dailytimer;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
+import giorag.dailytimer.interfaces.ItemTouchHelperAdapter;
+
 /**
  * Created by GioraPC on 02/03/2016.
  */

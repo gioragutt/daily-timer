@@ -1,9 +1,8 @@
-package giorag.dailytimer;
+package giorag.dailytimer.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -20,17 +19,32 @@ import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
 
+import giorag.dailytimer.DailyCountdown;
+import giorag.dailytimer.R;
+import giorag.dailytimer.enums.RunningState;
+import giorag.dailytimer.interfaces.TeamNamesEditDialogListener;
+import giorag.dailytimer.TinyDB;
 import giorag.dailytimer.modals.Person;
 import giorag.dailytimer.modals.Time;
 
+
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        TeamNamesEditDialogListener {
+        implements NavigationView.OnNavigationItemSelectedListener, TeamNamesEditDialogListener {
 
     public static final String CMD_PLAY = "{cmd-play}";
     public static final String CMD_REPLAY = "{cmd-replay}";
     public static final String CMD_PAUSE = "{cmd-pause}";
     public static final String CMD_STOP = "{cmd-stop}";
+    Time defaultTime;
+    Button pause;
+    Button start;
+    TextView timer;
+    TinyDB db;
+    SharedPreferences preferences;
+    DailyCountdown countdown;
+    ArrayList<Person> people;
+    RunningState runningState;
 
     @Override
     public void onPersonsListUpdate(ArrayList<Person> people) {
@@ -45,41 +59,6 @@ public class MainActivity extends AppCompatActivity
         initializeTimerTime(peopleAmount);
         initializeViews();
     }
-
-    enum RunningState {
-        Running {
-            @Override
-            public void restore(MainActivity activity) {
-                activity.onStartClick();
-            }
-
-        },
-        Paused {
-            @Override
-            public void restore(MainActivity activity) {
-                activity.onPauseClick();
-            }
-        },
-        Default {
-            @Override
-            public void restore(MainActivity activity) {
-                activity.onResetClick();
-            }
-        };
-
-        public abstract void restore(MainActivity activity);
-    }
-
-    Time defaultTime;
-    Button pause;
-    Button start;
-    TextView timer;
-    TinyDB db;
-
-    SharedPreferences preferences;
-    DailyCountdown countdown;
-    ArrayList<Person> people;
-    RunningState runningState;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -139,6 +118,49 @@ public class MainActivity extends AppCompatActivity
         initializeViews();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(runningState == RunningState.Default) {
+            initializeSettings();
+            initializeViews();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setStartButton(boolean enabled) {
         start.setText(CMD_PLAY);
         start.setEnabled(enabled);
@@ -150,7 +172,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void onStartClick() {
+    public void onStartClick() {
         log("Pressed START!");
         countdown.start();
         runningState = RunningState.Running;
@@ -169,7 +191,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void onResumeClick() {
+    public void onResumeClick() {
         log("Pressed RESUME!");
         runningState = RunningState.Running;
         resetCountdown(true);
@@ -188,7 +210,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void onPauseClick() {
+    public void onPauseClick() {
         log("Pressed PAUSE!");
         runningState = RunningState.Paused;
         resetCountdown(false);
@@ -207,7 +229,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void onResetClick() {
+    public void onResetClick() {
         log("Pressed RESET!");
         initializeViews();
         runningState = RunningState.Default;
@@ -263,11 +285,15 @@ public class MainActivity extends AppCompatActivity
         Log.i("Daily-Timer", message);
     }
 
-    private void setTimerText(Time time) {
+    public void setTimerText(Time time) {
         String seconds = "" + time.second;
         if (time.second < 10)
             seconds = "0" + seconds;
         timer.setText(time.minute + ":" + seconds);
+    }
+
+    public TextView getTimer() {
+        return timer;
     }
 
     private void resetCountdown(boolean startOnReset) {
@@ -277,7 +303,7 @@ public class MainActivity extends AppCompatActivity
 
     private void resetCountdown(RunningState runningState, long remaining, long interval) {
         countdown.cancel();
-        countdown = new DailyCountdown(Time.fromLong(remaining), interval);
+        countdown = new DailyCountdown(Time.fromLong(remaining), interval, this);
         if (runningState == RunningState.Running)
             countdown.start();
     }
@@ -285,7 +311,7 @@ public class MainActivity extends AppCompatActivity
     public void initializeViews() {
         if (countdown != null)
             countdown.cancel();
-        countdown = new DailyCountdown(defaultTime, 100);
+        countdown = new DailyCountdown(defaultTime, 100, this);
         setTimerText(defaultTime);
         runningState = RunningState.Default;
         setStartButton(true);
@@ -301,81 +327,6 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fm = getSupportFragmentManager();
         TeamNamesEditDialog editNamesDialog = new TeamNamesEditDialog();
         editNamesDialog.show(fm, "fragment_edit_names");
-    }
-
-    class DailyCountdown extends CountDownTimer {
-
-        public long getRemaining() {
-            return remaining;
-        }
-
-        public long getInterval() {
-            return interval;
-        }
-
-        private long remaining;
-        private long interval;
-
-        public DailyCountdown(Time time, long interval) {
-            super(time.toLong(), interval);
-
-            this.remaining = time.toLong();
-            this.interval = interval;
-        }
-
-        @Override
-        public void onTick(long remaining) {
-            setTimerText(Time.fromLong(remaining));
-            this.remaining = remaining;
-        }
-
-        @Override
-        public void onFinish() {
-            timer.setText("Done!");
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if(runningState == RunningState.Default) {
-            initializeSettings();
-            initializeViews();
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -403,4 +354,5 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 }
+
 
