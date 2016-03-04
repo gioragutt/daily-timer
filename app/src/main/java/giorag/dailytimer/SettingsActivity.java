@@ -179,7 +179,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            bindPreferenceSummaryToValue(findPreference("people_amount"));
             bindPreferenceSummaryToValue(findPreference("speaking_time"));
             bindPreferenceSummaryToValue(findPreference("transition_buffer"));
             bindPreferenceSummaryToValue(findPreference("transition_buffer_time"));

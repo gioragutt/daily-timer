@@ -228,8 +228,11 @@ public class MainActivity extends AppCompatActivity
             }
         }
         catch (NullPointerException e) {
-            peopleAmount = Integer.parseInt(preferences.getString("people_amount", "4"));
+            peopleAmount = 0;
         }
+
+        if (peopleAmount < 2)
+            peopleAmount = 2;
 
         initializeTimerTime(peopleAmount);
     }
