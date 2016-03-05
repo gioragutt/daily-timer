@@ -1,6 +1,7 @@
 package giorag.dailytimer;
 
 import android.os.CountDownTimer;
+import android.widget.TextView;
 
 import giorag.dailytimer.activities.MainActivity;
 import giorag.dailytimer.modals.Time;
@@ -9,14 +10,14 @@ public class DailyCountdown extends CountDownTimer {
 
     private long remaining;
     private long interval;
-    private MainActivity main;
+    private TextView timer;
 
-    public DailyCountdown(Time time, long interval, MainActivity main) {
+    public DailyCountdown(Time time, long interval, TextView timer) {
         super(time.toLong(), interval);
 
         this.remaining = time.toLong();
         this.interval = interval;
-        this.main = main;
+        this.timer = timer;
     }
 
     public long getRemaining() {
@@ -29,12 +30,12 @@ public class DailyCountdown extends CountDownTimer {
 
     @Override
     public void onTick(long remaining) {
-        main.setTimerText(Time.fromLong(remaining));
+        timer.setText(Time.fromLong(remaining).toString());
         this.remaining = remaining;
     }
 
     @Override
     public void onFinish() {
-        main.getTimer().setText("Done!");
+        timer.setText("Done!");
     }
 }

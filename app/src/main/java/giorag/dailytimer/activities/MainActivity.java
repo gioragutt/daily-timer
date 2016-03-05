@@ -27,8 +27,6 @@ import giorag.dailytimer.TinyDB;
 import giorag.dailytimer.modals.Person;
 import giorag.dailytimer.modals.Time;
 
-
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, TeamNamesEditDialogListener {
 
@@ -286,10 +284,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void setTimerText(Time time) {
-        String seconds = "" + time.second;
-        if (time.second < 10)
-            seconds = "0" + seconds;
-        timer.setText(time.minute + ":" + seconds);
+        timer.setText(time.toString());
     }
 
     public TextView getTimer() {
@@ -303,7 +298,7 @@ public class MainActivity extends AppCompatActivity
 
     private void resetCountdown(RunningState runningState, long remaining, long interval) {
         countdown.cancel();
-        countdown = new DailyCountdown(Time.fromLong(remaining), interval, this);
+        countdown = new DailyCountdown(Time.fromLong(remaining), interval, timer);
         if (runningState == RunningState.Running)
             countdown.start();
     }
@@ -311,7 +306,7 @@ public class MainActivity extends AppCompatActivity
     public void initializeViews() {
         if (countdown != null)
             countdown.cancel();
-        countdown = new DailyCountdown(defaultTime, 100, this);
+        countdown = new DailyCountdown(defaultTime, 100, timer);
         setTimerText(defaultTime);
         runningState = RunningState.Default;
         setStartButton(true);

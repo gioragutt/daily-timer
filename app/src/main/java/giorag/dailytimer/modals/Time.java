@@ -12,6 +12,14 @@ public class Time
         this.milli = milli;
     }
 
+    @Override
+    public String toString() {
+        String seconds = "" + second;
+        if (second < 10)
+            seconds = "0" + seconds;
+        return minute + ":" + seconds;
+    }
+
     public long toLong() {
         return (second + 60 * minute) * 1000 + milli;
     }
