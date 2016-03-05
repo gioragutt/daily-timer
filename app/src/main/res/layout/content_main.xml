@@ -19,22 +19,56 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:weightSum="2">
+        android:weightSum="8">
 
-        <TextView
+        <RelativeLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:id="@+id/main_timer"
-            android:text="0:00"
-            android:textSize="150sp"
-            android:layout_weight="1"
-            android:gravity="center"/>
+            android:layout_weight="4"
+            android:weightSum="7">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/main_timer"
+                android:text="0:00"
+                android:textSize="75sp"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/person_timer"
+                android:text="0:00"
+                android:textSize="100sp"
+                android:gravity="center"
+                android:layout_below="@+id/main_timer"
+                android:layout_alignParentStart="false"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="-0:00"
+                android:id="@+id/buffer_timer"
+                android:gravity="center"
+                android:textSize="50sp"
+                android:textColor="#ff1744"
+                android:layout_weight="1"
+                android:layout_below="@+id/person_timer"
+                android:layout_alignParentStart="false"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentEnd="false"/>
+        </RelativeLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:weightSum="2">
 
             <com.mikepenz.iconics.view.IconicsButton
@@ -43,7 +77,7 @@
                 android:id="@+id/main_start"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:textSize="175sp"/>
+                android:textSize="125sp"/>
 
             <com.mikepenz.iconics.view.IconicsButton
                 android:layout_width="0dp"
@@ -51,7 +85,17 @@
                 android:id="@+id/main_pause"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:textSize="175sp"/>
+                android:textSize="125sp"/>
+
         </LinearLayout>
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/imageButton"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_action_playback_forw"
+            android:layout_weight="2"/>
+
     </LinearLayout>
 </RelativeLayout>
