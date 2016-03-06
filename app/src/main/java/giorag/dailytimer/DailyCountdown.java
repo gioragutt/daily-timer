@@ -1,41 +1,62 @@
 package giorag.dailytimer;
 
 import android.os.CountDownTimer;
-import android.widget.TextView;
 
-import giorag.dailytimer.activities.MainActivity;
 import giorag.dailytimer.modals.Time;
 
 public class DailyCountdown extends CountDownTimer {
 
+    private static final long INTERVAL = 100;
     private long remaining;
-    private long interval;
-    private TextView timer;
+    private OnTickListener onTickListener;
+    private OnFinishListener onFinishListener;
 
-    public DailyCountdown(Time time, long interval, TextView timer) {
-        super(time.toLong(), interval);
+    public void setOnFinishListener(OnFinishListener onFinish) {
+        this.onFinishListener = onFinish;
+    }
+
+    public void setOnTickListener(OnTickListener onTick) {
+        this.onTickListener = onTick;
+    }
+
+    public DailyCountdown(Time time) {
+        super(time.toLong(), INTERVAL);
 
         this.remaining = time.toLong();
-        this.interval = interval;
-        this.timer = timer;
+    }
+
+    public DailyCountdown reset(long remaining, boolean startOnReset) {
+        cancel();
+        DailyCountdown newCountdown = new DailyCountdown(Time.fromLong(remaining));
+        newCountdown.setOnFinishListener(onFinishListener);
+        newCountdown.setOnTickListener(onTickListener);
+        if (startOnReset)
+            newCountdown.start();
+        return newCountdown;
     }
 
     public long getRemaining() {
         return remaining;
     }
 
-    public long getInterval() {
-        return interval;
+    interface OnTickListener {
+        void onTick(long remaining);
+    }
+
+    interface OnFinishListener {
+        void onFinish();
     }
 
     @Override
     public void onTick(long remaining) {
-        timer.setText(Time.fromLong(remaining).toString());
         this.remaining = remaining;
+        if (onTickListener != null)
+            onTickListener.onTick(remaining);
     }
 
     @Override
     public void onFinish() {
-        timer.setText("Done!");
+        if (onFinishListener != null)
+            onFinishListener.onFinish();
     }
 }
