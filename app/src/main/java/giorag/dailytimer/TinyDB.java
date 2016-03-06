@@ -51,7 +51,6 @@ public class TinyDB {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
     }
 
-
     /**
      * Decodes the Bitmap from 'path' and returns it
      * @param path image path
@@ -70,7 +69,6 @@ public class TinyDB {
         return bitmapFromPath;
     }
 
-
     /**
      * Returns the String path of the last saved image
      * @return string path of the last saved image
@@ -78,7 +76,6 @@ public class TinyDB {
     public String getSavedImagePath() {
         return lastImagePath;
     }
-
 
     /**
      * Saves 'theBitmap' into folder 'theFolder' with the name 'theImageName'
@@ -101,7 +98,6 @@ public class TinyDB {
 
         return mFullPath;
     }
-
 
     /**
      * Saves 'theBitmap' into 'fullPath'
@@ -192,8 +188,8 @@ public class TinyDB {
      * @param defaultValue int value returned if key was not found
      * @return int value at 'key' or 'defaultValue' if key not found
      */
-    public int getInt(String key) {
-        return preferences.getInt(key, 0);
+    public int getInt(String key, int defaultValue) {
+        return preferences.getInt(key, defaultValue);
     }
 
     /**
@@ -203,8 +199,8 @@ public class TinyDB {
      */
     public ArrayList<Integer> getListInt(String key) {
         String[] myList = TextUtils.split(preferences.getString(key, ""), "‚‗‚");
-        ArrayList<String> arrayToList = new ArrayList<String>(Arrays.asList(myList));
-        ArrayList<Integer> newList = new ArrayList<Integer>();
+        ArrayList<String> arrayToList = new ArrayList<>(Arrays.asList(myList));
+        ArrayList<Integer> newList = new ArrayList<>();
 
         for (String item : arrayToList)
             newList.add(Integer.parseInt(item));
@@ -228,8 +224,8 @@ public class TinyDB {
      * @param defaultValue float value returned if key was not found
      * @return float value at 'key' or 'defaultValue' if key not found
      */
-    public float getFloat(String key) {
-        return preferences.getFloat(key, 0);
+    public float getFloat(String key, float defaultValue) {
+        return preferences.getFloat(key, defaultValue);
     }
 
     /**
@@ -243,8 +239,8 @@ public class TinyDB {
 
         try {
             return Double.parseDouble(number);
-
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             return defaultValue;
         }
     }
@@ -268,10 +264,20 @@ public class TinyDB {
     /**
      * Get String value from SharedPreferences at 'key'. If key not found, return ""
      * @param key SharedPreferences key
+     * @param defaultValue Defauly value if value for 'key' is not found
+     * @return String value at 'key' or 'defaultValue' if key not found
+     */
+    public String getString(String key, String defaultValue) {
+        return preferences.getString(key, defaultValue);
+    }
+
+    /**
+     * Get String value from SharedPreferences at 'key'. If key not found, return ""
+     * @param key SharedPreferences key
      * @return String value at 'key' or "" (empty String) if key not found
      */
     public String getString(String key) {
-        return preferences.getString(key, "");
+        return getString(key, "");
     }
 
     /**
@@ -280,7 +286,7 @@ public class TinyDB {
      * @return ArrayList of String
      */
     public ArrayList<String> getListString(String key) {
-        return new ArrayList<String>(Arrays.asList(TextUtils.split(preferences.getString(key, ""), "‚‗‚")));
+        return new ArrayList<>(Arrays.asList(TextUtils.split(preferences.getString(key, ""), "‚‗‚")));
     }
 
     /**
@@ -289,8 +295,8 @@ public class TinyDB {
      * @param defaultValue boolean value returned if key was not found
      * @return boolean value at 'key' or 'defaultValue' if key not found
      */
-    public boolean getBoolean(String key) {
-        return preferences.getBoolean(key, false);
+    public boolean getBoolean(String key, boolean defaultValue) {
+        return preferences.getBoolean(key, defaultValue);
     }
 
     /**
@@ -300,43 +306,36 @@ public class TinyDB {
      */
     public ArrayList<Boolean> getListBoolean(String key) {
         ArrayList<String> myList = getListString(key);
-        ArrayList<Boolean> newList = new ArrayList<Boolean>();
+        ArrayList<Boolean> newList = new ArrayList<>();
 
         for (String item : myList) {
-            if (item.equals("true")) {
-                newList.add(true);
-            } else {
-                newList.add(false);
-            }
+            newList.add(item.equals("true"));
         }
 
         return newList;
     }
 
+    public ArrayList<Object> getListObject(String key, Class<?> mClass){
+        Gson gson = new Gson();
 
-        public ArrayList<Object> getListObject(String key, Class<?> mClass){
-        	Gson gson = new Gson();
+        ArrayList<String> objStrings = getListString(key);
+        ArrayList<Object> objects =  new ArrayList<>();
 
-        	ArrayList<String> objStrings = getListString(key);
-        	ArrayList<Object> objects =  new ArrayList<Object>();
-
-        	for(String jObjString : objStrings){
-        		Object value  = gson.fromJson(jObjString,  mClass);
-        		objects.add(value);
-        	}
-        	return objects;
+        for(String jObjString : objStrings){
+            Object value  = gson.fromJson(jObjString,  mClass);
+            objects.add(value);
         }
+        return objects;
+    }
 
+    public  Object getObject(String key, Class<?> classOfT){
 
-
-        public  Object getObject(String key, Class<?> classOfT){
-
-            String json = getString(key);
-            Object value = new Gson().fromJson(json, classOfT);
-            if (value == null)
-                throw new NullPointerException();
-            return value;
-        }
+        String json = getString(key);
+        Object value = new Gson().fromJson(json, classOfT);
+        if (value == null)
+            throw new NullPointerException();
+        return value;
+    }
 
 
     // Put methods
