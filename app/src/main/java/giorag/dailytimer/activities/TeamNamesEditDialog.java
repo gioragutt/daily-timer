@@ -154,6 +154,7 @@ public class TeamNamesEditDialog extends DialogFragment {
                 }
             }
             notifyItemMoved(fromPosition, toPosition);
+            update();
         }
 
         @Override

@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeDaily(ArrayList<Person> availablePeople) {
         daily = new Daily(Time.fromLong(totalTime), Time.fromLong(speakingTime), Time.fromLong(bufferTime),
-                availablePeople, bufferType, 0, totalTimer, personalTimer, bufferTimer, participantLabel);
+                availablePeople, bufferType, 0, totalTimer, personalTimer, bufferTimer, participantLabel, db);
 
         daily.setOnDailyFinishListener(this);
     }

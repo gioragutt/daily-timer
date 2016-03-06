@@ -39,6 +39,8 @@ public class Daily {
     TextView personalTimer;
     TextView bufferTimer;
 
+    TinyDB db;
+
     public Daily(Time total,
                  Time personal,
                  Time buffer,
@@ -48,7 +50,8 @@ public class Daily {
                  TextView totalTimer,
                  TextView personalTimer,
                  TextView bufferTimer,
-                 TextView participantLabel) {
+                 TextView participantLabel,
+                 TinyDB db) {
         this.total = total;
         this.personal = personal;
         this.buffer = buffer;
@@ -60,6 +63,7 @@ public class Daily {
         this.bufferTimer = bufferTimer;
         this.participantLabel = participantLabel;
         this.state = RunningState.Default;
+        this.db = db;
         log("Constructing Daily!");
         log("Total : " + total.toString());
         log("Personal : " + personal.toString());
@@ -216,10 +220,26 @@ public class Daily {
     }
 
     public void restoreState(MainActivity main, Bundle bundle) {
+        setOnDailyFinishListener(main);
         state.restore(main);
     }
 
-    public void saveState(Bundle bundle) { }
+    public void saveState(Bundle bundle) {
+        /*
+         Time total,
+         Time personal,
+         Time buffer,
+         ArrayList<Person> people,
+         BufferType bufferType,
+         int currentPerson,
+         TextView totalTimer,
+         TextView personalTimer,
+         TextView bufferTimer,
+         TextView participantLabel,
+         TinyDB db
+        */
+
+    }
 
     public void start() {
         state = RunningState.Running;
