@@ -13,28 +13,99 @@
     tools:context=".activities.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Participant: "
+                android:id="@+id/textView4"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_alignParentStart="false"
+                android:layout_centerInParent="true"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/current_practicipent_name"
+                android:layout_toEndOf="@+id/textView4"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:weightSum="2">
+        android:weightSum="8"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentEnd="true">
 
-        <TextView
+        <RelativeLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:id="@+id/main_timer"
-            android:text="0:00"
-            android:textSize="150sp"
-            android:layout_weight="1"
-            android:gravity="center"/>
+            android:layout_weight="4"
+            android:weightSum="7">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/main_timer"
+                android:text="0:00"
+                android:textSize="60sp"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="false"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/person_timer"
+                android:text="0:00"
+                android:textSize="100sp"
+                android:gravity="center"
+                android:layout_below="@+id/main_timer"
+                android:layout_alignParentStart="false"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="-0:00"
+                android:id="@+id/buffer_timer"
+                android:gravity="center"
+                android:textSize="35sp"
+                android:textColor="#ff1744"
+                android:layout_weight="1"
+                android:layout_below="@+id/person_timer"
+                android:layout_alignParentStart="false"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:weightSum="2">
 
             <com.mikepenz.iconics.view.IconicsButton
@@ -43,7 +114,7 @@
                 android:id="@+id/main_start"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:textSize="175sp"/>
+                android:textSize="125sp"/>
 
             <com.mikepenz.iconics.view.IconicsButton
                 android:layout_width="0dp"
@@ -51,7 +122,18 @@
                 android:id="@+id/main_pause"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:textSize="175sp"/>
+                android:textSize="125sp"/>
+
         </LinearLayout>
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/move_to_next_person"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_action_playback_forw"
+            android:layout_weight="2"/>
+
     </LinearLayout>
+
 </RelativeLayout>
