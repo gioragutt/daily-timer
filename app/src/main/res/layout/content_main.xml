@@ -65,7 +65,7 @@
             android:weightSum="7">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/main_timer"
                 android:text="0:00"
@@ -76,7 +76,7 @@
                 android:layout_alignParentStart="false"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/person_timer"
                 android:text="0:00"
@@ -87,7 +87,7 @@
                 android:layout_centerHorizontal="true"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="-0:00"
                 android:id="@+id/buffer_timer"
@@ -98,7 +98,34 @@
                 android:layout_below="@+id/person_timer"
                 android:layout_alignParentStart="false"
                 android:layout_centerHorizontal="true"
-                android:layout_alignParentEnd="true"/>
+                android:layout_alignParentEnd="false"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="buffer: "
+                android:id="@+id/textView9"
+                android:layout_alignBaseline="@+id/buffer_timer"
+                android:layout_alignBottom="@+id/buffer_timer"
+                android:layout_toStartOf="@+id/buffer_timer"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="personal: "
+                android:id="@+id/textView10"
+                android:layout_alignBaseline="@+id/person_timer"
+                android:layout_alignBottom="@+id/person_timer"
+                android:layout_toStartOf="@+id/textView11"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="total: "
+                android:id="@+id/textView11"
+                android:layout_alignBaseline="@+id/main_timer"
+                android:layout_alignBottom="@+id/main_timer"
+                android:layout_toStartOf="@+id/main_timer"/>
         </RelativeLayout>
 
         <LinearLayout
