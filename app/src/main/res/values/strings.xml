@@ -21,7 +21,7 @@
     <string name="pref_title_transition_buffer_time">Buffer Time (Seconds)</string>
     <string name="pref_title_people_amount">Team Size</string>
 
-    <string name="pref_title_transition_buffers">Buffer Types</string>
+    <string name="pref_title_transition_buffers">Buffer Type</string>
     <string-array name="pref_transition_buffers_titles">
         <item>Team Buffer</item>
         <item>Individual Buffer</item>
@@ -55,9 +55,9 @@
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
     <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_header_notifications">Alarm</string>
 
-    <string name="pref_title_new_message_notifications">New message notifications</string>
+    <string name="pref_title_new_message_notifications">Play Alarm</string>
 
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
