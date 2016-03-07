@@ -20,7 +20,7 @@
 
     <EditTextPreference
         android:defaultValue="@integer/pref_default_transition_buffer_time"
-        android:inputType="numberDecimal"
+        android:inputType="time"
         android:key="transition_buffer_time"
         android:maxLines="1"
         android:selectAllOnFocus="true"

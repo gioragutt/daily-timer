@@ -18,10 +18,10 @@
     </string>
 
     <string name="pref_title_speaking_time">Speaking Time (Seconds)</string>
-    <string name="pref_title_transition_buffer_time">Transition Buffer Time (Seconds)</string>
+    <string name="pref_title_transition_buffer_time">Buffer Time (Seconds)</string>
     <string name="pref_title_people_amount">Team Size</string>
 
-    <string name="pref_title_transition_buffers">Transition Buffers</string>
+    <string name="pref_title_transition_buffers">Buffer Types</string>
     <string-array name="pref_transition_buffers_titles">
         <item>Team Buffer</item>
         <item>Individual Buffer</item>

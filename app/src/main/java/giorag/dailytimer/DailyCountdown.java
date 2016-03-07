@@ -10,6 +10,7 @@ public class DailyCountdown extends CountDownTimer {
     private long remaining;
     private OnTickListener onTickListener;
     private OnFinishListener onFinishListener;
+    public boolean isRunning;
 
     public void setOnFinishListener(OnFinishListener onFinish) {
         this.onFinishListener = onFinish;
@@ -23,15 +24,28 @@ public class DailyCountdown extends CountDownTimer {
         super(time.toLong(), INTERVAL);
 
         this.remaining = time.toLong();
+        this.isRunning = false;
     }
 
-    public DailyCountdown reset(long remaining, boolean startOnReset) {
+    public void myStart() {
+        isRunning = true;
+        start();
+    }
+
+    public void myCancel() {
+        isRunning = false;
         cancel();
+    }
+
+
+    public DailyCountdown reset(long remaining, boolean startOnReset) {
+        myCancel();
+        isRunning = false;
         DailyCountdown newCountdown = new DailyCountdown(Time.fromLong(remaining));
         newCountdown.setOnFinishListener(onFinishListener);
         newCountdown.setOnTickListener(onTickListener);
         if (startOnReset)
-            newCountdown.start();
+            newCountdown.myStart();
         return newCountdown;
     }
 
@@ -56,6 +70,7 @@ public class DailyCountdown extends CountDownTimer {
 
     @Override
     public void onFinish() {
+        isRunning = false;
         if (onFinishListener != null)
             onFinishListener.onFinish();
     }

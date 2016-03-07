@@ -1,8 +1,12 @@
 package giorag.dailytimer.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -31,9 +35,11 @@ import giorag.dailytimer.modals.Person;
 import giorag.dailytimer.modals.Time;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, TeamNamesEditDialogListener, Daily.OnDailyFinishListener
+        implements NavigationView.OnNavigationItemSelectedListener,
+        TeamNamesEditDialogListener,
+        Daily.OnDailyFinishListener,
+        Daily.OnPersonChangedListener
 {
-
     public static final String CMD_PLAY = "{cmd-play}";
     public static final String CMD_REPLAY = "{cmd-replay}";
     public static final String CMD_PAUSE = "{cmd-pause}";
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity
     Button pause;
     Button start;
     ImageButton next;
+    MediaPlayer ringtonePlayer;
 
     TextView totalTimer;
     TextView personalTimer;
@@ -55,7 +62,7 @@ public class MainActivity extends AppCompatActivity
     Daily daily;
     SharedPreferences preferences;
     ArrayList<Person> people;
-
+    Vibrator dildo;
 
     @Override
     public void onPersonsListUpdate(ArrayList<Person> people) {
@@ -81,14 +88,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         log("onSaveInstanceState");
-        daily.saveState(outState);
+        daily.saveState();
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         log("onRestoreInstanceState");
-        daily.restoreState(this, savedInstanceState);
+        daily.restoreState(this, totalTimer, personalTimer, bufferTimer, participantLabel);
         super.onRestoreInstanceState(savedInstanceState);
     }
 
@@ -136,9 +143,10 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeDaily(ArrayList<Person> availablePeople) {
         daily = new Daily(Time.fromLong(totalTime), Time.fromLong(speakingTime), Time.fromLong(bufferTime),
-                availablePeople, bufferType, 0, totalTimer, personalTimer, bufferTimer, participantLabel, db);
+                availablePeople, bufferType, 0, totalTimer, personalTimer, bufferTimer, participantLabel, this);
 
         daily.setOnDailyFinishListener(this);
+        daily.setOnPersonChangedListener(this);
     }
 
     @Override
@@ -367,19 +375,19 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_camera)
             showDialog();
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -388,10 +396,37 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFinish() {
+        playRingtone();
         setRestartButton();
         setStartButton(false);
         setPauseButton(false);
     }
+
+    @Override
+    public void onPersonChanged(Person newPerson) {
+        participantLabel.setText(newPerson.name);
+        playRingtone();
+    }
+
+    private void playRingtone() {
+        boolean shouldPlayRingtone = preferences.getBoolean("should_play_ringtone", false);
+
+        if(!shouldPlayRingtone)
+            return;
+
+        boolean shouldVibrate = preferences.getBoolean("should_vibrate_on_ringtone", false);
+        if(shouldVibrate) {
+            dildo = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            dildo.vibrate(400);
+        }
+
+        Uri notification = Uri.parse(preferences.getString("ringtone_sound", ""));
+        if(ringtonePlayer != null) {
+            ringtonePlayer.release(); }
+        ringtonePlayer = MediaPlayer.create(this, notification);
+        ringtonePlayer.start();
+    }
+
 }
 
 

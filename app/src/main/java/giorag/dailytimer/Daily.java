@@ -1,6 +1,6 @@
 package giorag.dailytimer;
 
-import android.os.Bundle;
+import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -26,13 +26,10 @@ public class Daily {
 
     ArrayList<Person> people;
     int currentPerson;
-    RunningState state;
-
-    public void setOnDailyFinishListener(OnDailyFinishListener onDailyFinishListener) {
-        this.onDailyFinishListener = onDailyFinishListener;
-    }
+    RunningState runningState;
 
     OnDailyFinishListener onDailyFinishListener;
+    OnPersonChangedListener onPersonChangedListener;
 
     TextView participantLabel;
     TextView totalTimer;
@@ -51,7 +48,7 @@ public class Daily {
                  TextView personalTimer,
                  TextView bufferTimer,
                  TextView participantLabel,
-                 TinyDB db) {
+                 Context context) {
         this.total = total;
         this.personal = personal;
         this.buffer = buffer;
@@ -62,8 +59,9 @@ public class Daily {
         this.personalTimer = personalTimer;
         this.bufferTimer = bufferTimer;
         this.participantLabel = participantLabel;
-        this.state = RunningState.Default;
-        this.db = db;
+        this.runningState = RunningState.Default;
+        this.db = new TinyDB(context);
+
         log("Constructing Daily!");
         log("Total : " + total.toString());
         log("Personal : " + personal.toString());
@@ -71,7 +69,7 @@ public class Daily {
         log("People : " + people.toString());
         log("Buffer Type " + bufferType.toString());
         log("Current Person : " + currentPerson);
-        log("Running State : " + state.toString());
+        log("Running State : " + runningState.toString());
 
         initializeCountdownTimers();
         setParticipant(currentPerson);
@@ -79,6 +77,14 @@ public class Daily {
 
     private void log(String message) {
         Log.i("Daily", message);
+    }
+
+    public void setOnDailyFinishListener(OnDailyFinishListener onDailyFinishListener) {
+        this.onDailyFinishListener = onDailyFinishListener;
+    }
+
+    public void setOnPersonChangedListener(OnPersonChangedListener onPersonChangedListener) {
+        this.onPersonChangedListener = onPersonChangedListener;
     }
 
     private void initializeCountdownTimers() {
@@ -219,56 +225,95 @@ public class Daily {
         participantLabel.setText(people.get(index).name);
     }
 
-    public void restoreState(MainActivity main, Bundle bundle) {
+    public void restoreState(MainActivity main,
+                             TextView totalTimer,
+                             TextView personalTimer,
+                             TextView bufferTimer,
+                             TextView participantLabel) {
+        this.participantLabel = participantLabel;
+        this.totalTimer = totalTimer;
+        this.personalTimer = personalTimer;
+        this.bufferTimer = bufferTimer;
+        this.db = new TinyDB(main);
+
+        total = Time.fromLong(db.getLong("total", 0));
+        personal = Time.fromLong(db.getLong("personal", 0));
+        buffer = Time.fromLong(db.getLong("buffer", 0));
+        bufferType = BufferType.valueOf(db.getString("bufferType"));
+        currentPerson = db.getInt("currentPerson", 0);
+        people = new ArrayList<>();
+
+        ArrayList<Object> personObjects = db.getListObject("people", Person.class);
+        for (Object p : personObjects)
+            people.add((Person) p);
+
+        runningState = RunningState.valueOf(db.getString("runningState"));
+
+        totalCountdown = totalCountdown.reset(db.getLong("totalCountdown", 0), db.getBoolean("totalCountdown-running", false));
+        personalCountdown = personalCountdown.reset(db.getLong("personalCountdown", 0), db.getBoolean("personalCountdown-running", false));
+        bufferCountdown = bufferCountdown.reset(db.getLong("bufferCountdown", 0), db.getBoolean("bufferCountdown-running", false));
+
         setOnDailyFinishListener(main);
-        state.restore(main);
+        setOnPersonChangedListener(main);
+        runningState.restore(main);
+
+        log("Constructing Daily!");
+        log("Total : " + total.toString());
+        log("Personal : " + personal.toString());
+        log("Buffer : " + buffer.toString());
+        log("People : " + people.toString());
+        log("Buffer Type " + bufferType.toString());
+        log("Current Person : " + currentPerson);
+        log("Running State : " + runningState.toString());
     }
 
-    public void saveState(Bundle bundle) {
-        /*
-         Time total,
-         Time personal,
-         Time buffer,
-         ArrayList<Person> people,
-         BufferType bufferType,
-         int currentPerson,
-         TextView totalTimer,
-         TextView personalTimer,
-         TextView bufferTimer,
-         TextView participantLabel,
-         TinyDB db
-        */
+    public void saveState() {
+        db.putLong("total", total.toLong());
+        db.putLong("personal", personal.toLong());
+        db.putLong("buffer", buffer.toLong());
+        db.putString("bufferType", bufferType.toString());
+        db.putInt("currentPerson", currentPerson);
+        db.putListObject("people", new ArrayList<Object>(people));
+        db.putString("runningState", runningState.toString());
 
+        db.putLong("personalCountdown", personalCountdown.getRemaining());
+        db.putBoolean("personalCountdown-running", personalCountdown.isRunning);
+        db.putLong("bufferCountdown", bufferCountdown.getRemaining());
+        db.putBoolean("bufferCountdown-running", bufferCountdown.isRunning);
+        db.putLong("bufferCountdown", bufferCountdown.getRemaining());
+        db.putBoolean("bufferCountdown-running", bufferCountdown.isRunning);
     }
 
     public void start() {
-        state = RunningState.Running;
+        runningState = RunningState.Running;
         totalCountdown.start();
         personalCountdown.start();
     }
 
     public void pause() {
-        state = RunningState.Paused;
+        runningState = RunningState.Paused;
         totalCountdown = totalCountdown.reset(totalCountdown.getRemaining(), false);
         personalCountdown = personalCountdown.reset(personalCountdown.getRemaining(), false);
         bufferCountdown = bufferCountdown.reset(bufferCountdown.getRemaining(), false);
     }
 
     public void reset() {
-        state = RunningState.Default;
+        runningState = RunningState.Default;
         totalCountdown = totalCountdown.reset(total.toLong(), false);
         personalCountdown = personalCountdown.reset(personal.toLong(), false);
         bufferCountdown = bufferCountdown.reset(buffer.toLong(), false);
         currentPerson = 0;
         setParticipant(currentPerson);
+
         initializeTimerLabels();
     }
 
     public void next() {
         currentPerson++;
         setParticipant(currentPerson);
-        personalCountdown = personalCountdown.reset(personal.toLong(), state == RunningState.Running);
-        log("next - currentPerson [ " + currentPerson + " " + people.get(currentPerson).name + " ] state [ " + state.toString() + " ]");
+        procOnPersonChanged();
+        personalCountdown = personalCountdown.reset(personal.toLong(), runningState == RunningState.Running);
+        log("next - currentPerson [ " + currentPerson + " " + people.get(currentPerson).name + " ] runningState [ " + runningState.toString() + " ]");
 
         switch (bufferType) {
             case Individual:
@@ -282,7 +327,16 @@ public class Daily {
         updateTimerLables();
     }
 
+    private void procOnPersonChanged() {
+        if (onPersonChangedListener != null)
+            onPersonChangedListener.onPersonChanged(people.get(currentPerson));
+    }
+
     public interface OnDailyFinishListener {
         void onFinish();
+    }
+
+    public interface OnPersonChangedListener {
+        void onPersonChanged(Person newPerson);
     }
 }
