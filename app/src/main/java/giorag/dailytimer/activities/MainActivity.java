@@ -27,8 +27,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import giorag.dailytimer.Daily;
+import giorag.dailytimer.interfaces.OnDailyFinishListener;
 import giorag.dailytimer.R;
 import giorag.dailytimer.enums.BufferType;
+import giorag.dailytimer.interfaces.OnPersonChangedListener;
 import giorag.dailytimer.interfaces.TeamNamesEditDialogListener;
 import giorag.dailytimer.TinyDB;
 import giorag.dailytimer.modals.Person;
@@ -36,9 +38,7 @@ import giorag.dailytimer.modals.Time;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        TeamNamesEditDialogListener,
-        Daily.OnDailyFinishListener,
-        Daily.OnPersonChangedListener
+        TeamNamesEditDialogListener, OnDailyFinishListener, OnPersonChangedListener
 {
     public static final String CMD_PLAY = "{cmd-play}";
     public static final String CMD_REPLAY = "{cmd-replay}";

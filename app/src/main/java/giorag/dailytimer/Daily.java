@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import giorag.dailytimer.activities.MainActivity;
 import giorag.dailytimer.enums.BufferType;
 import giorag.dailytimer.enums.RunningState;
+import giorag.dailytimer.interfaces.OnDailyFinishListener;
+import giorag.dailytimer.interfaces.OnPersonChangedListener;
 import giorag.dailytimer.modals.Person;
 import giorag.dailytimer.modals.Time;
 
@@ -337,11 +339,6 @@ public class Daily {
             onPersonChangedListener.onPersonChanged(people.get(currentPerson));
     }
 
-    public interface OnDailyFinishListener {
-        void onFinish();
-    }
 
-    public interface OnPersonChangedListener {
-        void onPersonChanged(Person newPerson);
-    }
+
 }
