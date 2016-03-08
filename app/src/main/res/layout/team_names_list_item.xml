@@ -11,16 +11,18 @@
         android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/name_in_list"
         android:gravity="center_vertical"
-        android:layout_centerVertical="true"
         android:textSize="30sp"
         android:singleLine="true"
         android:checked="true"
         android:clickable="true"
         android:focusable="true"
         android:layout_gravity="center_vertical"
-        android:layout_alignParentRight="true"
         android:paddingLeft="16dp"
         android:paddingTop="4dp"
-        android:paddingBottom="4dp"/>
+        android:paddingBottom="4dp"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="false"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>
