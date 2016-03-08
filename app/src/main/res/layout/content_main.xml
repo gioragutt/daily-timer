@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,14 +9,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:weightSum="9"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/relativeLayout">
+        android:layout_height="0dp"
+        android:id="@+id/relativeLayout"
+        android:layout_weight="1">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -52,81 +55,102 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:weightSum="8"
-        android:layout_below="@+id/relativeLayout"
-        android:layout_alignParentEnd="true">
+        android:layout_weight="8">
 
-        <RelativeLayout
+        <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4"
             android:weightSum="7">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/main_timer"
-                android:text="0:00"
-                android:textSize="60sp"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="false"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/person_timer"
-                android:text="0:00"
-                android:textSize="100sp"
-                android:gravity="center"
-                android:layout_below="@+id/main_timer"
-                android:layout_alignParentStart="false"
-                android:layout_centerHorizontal="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="total: "
+                    android:id="@+id/textView11"
+                    android:layout_alignBaseline="@+id/main_timer"
+                    android:layout_alignBottom="@+id/main_timer"
+                    android:layout_toStartOf="@+id/main_timer"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-0:00"
-                android:id="@+id/buffer_timer"
-                android:gravity="center"
-                android:textSize="35sp"
-                android:textColor="#ff1744"
-                android:layout_weight="1"
-                android:layout_below="@+id/person_timer"
-                android:layout_alignParentStart="false"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentEnd="false"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/main_timer"
+                    android:text="0:00"
+                    android:textSize="60sp"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="false"/>
+            </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="buffer: "
-                android:id="@+id/textView9"
-                android:layout_alignBaseline="@+id/buffer_timer"
-                android:layout_alignBottom="@+id/buffer_timer"
-                android:layout_toStartOf="@+id/buffer_timer"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="personal: "
-                android:id="@+id/textView10"
-                android:layout_alignBaseline="@+id/person_timer"
-                android:layout_alignBottom="@+id/person_timer"
-                android:layout_toStartOf="@+id/textView11"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="personal: "
+                    android:id="@+id/textView10"
+                    android:layout_alignBaseline="@+id/person_timer"
+                    android:layout_alignBottom="@+id/person_timer"
+                    android:layout_toStartOf="@+id/person_timer"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="total: "
-                android:id="@+id/textView11"
-                android:layout_alignBaseline="@+id/main_timer"
-                android:layout_alignBottom="@+id/main_timer"
-                android:layout_toStartOf="@+id/main_timer"/>
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/person_timer"
+                    android:text="0:00"
+                    android:textSize="100sp"
+                    android:gravity="center"
+                    android:layout_below="@+id/main_timer"
+                    android:layout_alignParentStart="false"
+                    android:layout_centerHorizontal="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="buffer: "
+                    android:id="@+id/textView9"
+                    android:layout_alignBaseline="@+id/buffer_timer"
+                    android:layout_alignBottom="@+id/buffer_timer"
+                    android:layout_toStartOf="@+id/buffer_timer"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-0:00"
+                    android:id="@+id/buffer_timer"
+                    android:gravity="center"
+                    android:textSize="35sp"
+                    android:textColor="#ff1744"
+                    android:layout_weight="1"
+                    android:layout_below="@+id/person_timer"
+                    android:layout_alignParentStart="false"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentEnd="false"/>
+            </RelativeLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -163,4 +187,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
