@@ -221,6 +221,11 @@ public class Daily {
         if (index < 0 || index > people.size())
             throw new InvalidParameterException("Participant index must be between 0 and " + (people.size() - 1));
 
+        if (people.size() <= 0) {
+            participantLabel.setText("Team List is empty!");
+            return;
+        }
+
         currentPerson = index;
         participantLabel.setText(people.get(index).name);
     }
