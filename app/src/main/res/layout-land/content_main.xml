@@ -14,7 +14,6 @@
     tools:showIn="@layout/app_bar_main">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
@@ -44,125 +43,153 @@
                 android:layout_gravity="left"/>
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:weightSum="7">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <RelativeLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:id="@+id/relativeLayout2">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:weightSum="7">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="total: "
-                    android:id="@+id/textView6"
-                    android:layout_alignBaseline="@+id/main_timer"
-                    android:layout_alignBottom="@+id/main_timer"
-                    android:layout_toStartOf="@+id/main_timer"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/main_timer"
-                    android:text="@string/positive_default_timer"
-                    android:textSize="30sp"
-                    android:gravity="center"
-                    android:layout_below="@+id/linearLayout"
-                    android:layout_alignParentStart="false"
-                    android:textStyle="bold"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"/>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="false"
-                    android:id="@+id/linearLayout"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true">
+                    android:id="@+id/relativeLayout2">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Participant: "
-                        android:id="@+id/textView5"
-                        android:layout_gravity="center"
+                        android:text="total: "
+                        android:id="@+id/textView6"
+                        android:layout_alignBaseline="@+id/main_timer"
+                        android:layout_alignBottom="@+id/main_timer"
+                        android:layout_toStartOf="@+id/main_timer"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/main_timer"
+                        android:text="@string/positive_default_timer"
+                        android:textSize="50sp"
                         android:gravity="center"
-                        android:textSize="20sp"/>
+                        android:layout_below="@+id/linearLayout"
+                        android:layout_alignParentStart="false"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"/>
 
-                    <TextView
+                    <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="New Text"
-                        android:id="@+id/current_practicipent_name"
-                        android:layout_toEndOf="@+id/textView5"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="20sp"/>
-                </LinearLayout>
+                        android:layout_alignParentTop="false"
+                        android:id="@+id/linearLayout"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Participant: "
+                            android:id="@+id/textView5"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="New Text"
+                            android:id="@+id/current_practicipent_name"
+                            android:layout_toEndOf="@+id/textView5"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="25sp"/>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2"
+                    android:layout_alignParentBottom="true"
+                    android:baselineAligned="false">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom|center_horizontal"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_alignTop="@+id/relativeLayout3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="personal: "
+                            android:id="@+id/textView8"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentStart="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/person_timer"
+                            android:text="@string/positive_default_timer"
+                            android:textSize="75sp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_toEndOf="@+id/textView8"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom|center_horizontal"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="false"
+                        android:layout_alignParentBottom="true"
+                        android:id="@+id/relativeLayout3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="buffer: "
+                            android:id="@+id/textView7"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentStart="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/negative_default_timer"
+                            android:id="@+id/buffer_timer"
+                            android:gravity="center"
+                            android:textSize="75sp"
+                            android:textColor="#ff1744"
+                            android:layout_alignParentTop="true"
+                            android:layout_toEndOf="@+id/textView7"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/person_timer"
-                android:text="@string/positive_default_timer"
-                android:textSize="75sp"
-                android:gravity="center"
-                android:layout_below="@+id/relativeLayout2"
-                android:layout_alignParentStart="false"
-                android:layout_centerHorizontal="true"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/negative_default_timer"
-                android:id="@+id/buffer_timer"
-                android:gravity="center"
-                android:textSize="30sp"
-                android:textColor="#ff1744"
-                android:layout_below="@+id/person_timer"
-                android:layout_alignParentStart="false"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentEnd="false"/>
-
-            <ImageButton
+            <com.mikepenz.iconics.view.IconicsButton
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:id="@+id/move_to_next_person"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_action_playback_forw"
-                android:layout_below="@+id/buffer_timer"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"/>
+                android:textSize="115sp"
+                android:layout_weight="1"
+                android:gravity="center"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="personal: "
-                android:id="@+id/textView8"
-                android:layout_alignBaseline="@+id/person_timer"
-                android:layout_alignBottom="@+id/person_timer"
-                android:layout_toStartOf="@+id/person_timer"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="buffer: "
-                android:id="@+id/textView7"
-                android:layout_alignBaseline="@+id/buffer_timer"
-                android:layout_alignBottom="@+id/buffer_timer"
-                android:layout_toStartOf="@+id/buffer_timer"/>
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>

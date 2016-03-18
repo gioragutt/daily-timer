@@ -2,6 +2,8 @@ package giorag.dailytimer.modals;
 
 public class Time
 {
+    public static final Time ZERO = Time.fromLong(0);
+
     public long minute;
     public long second;
     public long milli;

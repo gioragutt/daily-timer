@@ -25,10 +25,12 @@
     <string-array name="pref_transition_buffers_titles">
         <item>Team Buffer</item>
         <item>Individual Buffer</item>
+        <item>No Buffer</item>
     </string-array>
     <string-array name="pref_transition_buffers_values">
         <item>0</item>
         <item>1</item>
+        <item>2</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->
