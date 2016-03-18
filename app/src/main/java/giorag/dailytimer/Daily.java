@@ -56,6 +56,8 @@ public class Daily {
         this.buffer = buffer;
         this.people = people;
         this.bufferType = bufferType;
+        if (bufferType == BufferType.None)
+            buffer = Time.ZERO;
         this.currentPerson = currentPerson;
         this.totalTimer = totalTimer;
         this.personalTimer = personalTimer;
@@ -90,6 +92,7 @@ public class Daily {
     }
 
     private void initializeCountdownTimers() {
+        log("Initializing total with " + this.total);
         totalCountdown = new DailyCountdown(this.total);
         totalCountdown.setOnFinishListener(new DailyCountdown.OnFinishListener() {
             @Override
@@ -104,6 +107,7 @@ public class Daily {
             }
         });
 
+        log("Initializing personal with " + this.personal);
         personalCountdown = new DailyCountdown(this.personal);
         personalCountdown.setOnFinishListener(new DailyCountdown.OnFinishListener() {
             @Override
@@ -118,6 +122,7 @@ public class Daily {
             }
         });
 
+        log("Initializing buffer with " + this.buffer);
         bufferCountdown = new DailyCountdown(this.buffer);
         bufferCountdown.setOnFinishListener(new DailyCountdown.OnFinishListener() {
             @Override
@@ -141,7 +146,7 @@ public class Daily {
         bufferTimer.setText("-" + buffer.toString());
     }
 
-    private void updateTimerLables() {
+    private void updateTimerLabels() {
         totalTimer.setText(Time.fromLong(totalCountdown.getRemaining()).toString());
         personalTimer.setText(Time.fromLong(personalCountdown.getRemaining()).toString());
         bufferTimer.setText("-" + Time.fromLong(bufferCountdown.getRemaining()).toString());
@@ -233,6 +238,7 @@ public class Daily {
     }
 
     public void restoreState(MainActivity main,
+                             BufferType bufferType,
                              TextView totalTimer,
                              TextView personalTimer,
                              TextView bufferTimer,
@@ -243,10 +249,10 @@ public class Daily {
         this.bufferTimer = bufferTimer;
         this.db = new TinyDB(main);
 
+        //bufferType = BufferType.valueOf(db.getString("bufferType"));
         total = Time.fromLong(db.getLong("total", 0));
         personal = Time.fromLong(db.getLong("personal", 0));
-        buffer = Time.fromLong(db.getLong("buffer", 0));
-        bufferType = BufferType.valueOf(db.getString("bufferType"));
+        buffer = bufferType == BufferType.None ?  buffer = Time.ZERO : Time.fromLong(db.getLong("buffer", 0));
         currentPerson = db.getInt("currentPerson", 0);
         people = new ArrayList<>();
 
@@ -258,12 +264,14 @@ public class Daily {
 
         totalCountdown = totalCountdown.reset(db.getLong("totalCountdown", 0), db.getBoolean("totalCountdown-running", false));
         personalCountdown = personalCountdown.reset(db.getLong("personalCountdown", 0), db.getBoolean("personalCountdown-running", false));
-        bufferCountdown = bufferCountdown.reset(db.getLong("bufferCountdown", 0), db.getBoolean("bufferCountdown-running", false));
+        bufferCountdown = bufferCountdown.reset(bufferType == BufferType.None ? 0 : db.getLong("bufferCountdown", 0),
+                                                db.getBoolean("bufferCountdown-running", false));
 
         setOnDailyFinishListener(main);
         setOnPersonChangedListener(main);
         runningState.restore(main);
 
+        log("=================================");
         log("Constructing Daily!");
         log("Total : " + total.toString());
         log("Personal : " + personal.toString());
@@ -272,6 +280,7 @@ public class Daily {
         log("Buffer Type " + bufferType.toString());
         log("Current Person : " + currentPerson);
         log("Running State : " + runningState.toString());
+        log("=================================");
     }
 
     public void saveState() {
@@ -331,7 +340,7 @@ public class Daily {
                 break;
         }
 
-        updateTimerLables();
+        updateTimerLabels();
     }
 
     private void procOnPersonChanged() {
@@ -339,6 +348,12 @@ public class Daily {
             onPersonChangedListener.onPersonChanged(people.get(currentPerson));
     }
 
-
-
+    public static BufferType convert(int num) {
+        switch(num) {
+            case 0: return BufferType.Team;
+            case 1: return BufferType.Individual;
+            case 2: return BufferType.None;
+            default: return BufferType.None;
+        }
+    }
 }

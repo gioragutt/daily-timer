@@ -10,7 +10,6 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,7 +21,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import java.util.ArrayList;
 
@@ -40,10 +38,14 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         TeamNamesEditDialogListener, OnDailyFinishListener, OnPersonChangedListener
 {
-    public static final String CMD_PLAY = "{cmd-play}";
-    public static final String CMD_REPLAY = "{cmd-replay}";
-    public static final String CMD_PAUSE = "{cmd-pause}";
-    public static final String CMD_STOP = "{cmd-stop}";
+    public static final String PLAY_ICON = "{cmd-play}";
+    public static final String REPLAY_ICON = "{cmd-replay}";
+    public static final String PAUSE_ICON = "{cmd-pause}";
+    public static final String STOP_ICON = "{cmd-stop}";
+    public static final String FAST_FORWARD_ICON = "{cmd-fast-forward}";
+    public static final String RESTART_ICON = "{cmd-repeat}";
+
+
     long totalTime;
     long speakingTime;
     long bufferTime;
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity
 
     Button pause;
     Button start;
-    ImageButton next;
+    Button next;
     MediaPlayer ringtonePlayer;
 
     TextView totalTimer;
@@ -95,7 +97,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         log("onRestoreInstanceState");
-        daily.restoreState(this, totalTimer, personalTimer, bufferTimer, participantLabel);
+        BufferType bufferType = Daily.convert(Integer.parseInt(preferences.getString("transition_buffer", "0")));
+        daily.restoreState(this, bufferType, totalTimer, personalTimer, bufferTimer, participantLabel);
         super.onRestoreInstanceState(savedInstanceState);
     }
 
@@ -124,7 +127,7 @@ public class MainActivity extends AppCompatActivity
 
         pause = (Button)findViewById(R.id.main_pause);
         start = (Button)findViewById(R.id.main_start);
-        next = (ImageButton)findViewById(R.id.move_to_next_person);
+        next = (Button)findViewById(R.id.move_to_next_person);
         totalTimer = (TextView)findViewById(R.id.main_timer);
         personalTimer = (TextView)findViewById(R.id.person_timer);
         bufferTimer = (TextView)findViewById(R.id.buffer_timer);
@@ -137,6 +140,9 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        if (ringtonePlayer != null)
+            ringtonePlayer.release();
+
         initializeDaily(getAvailablePeople());
         initializeViews();
     }
@@ -147,6 +153,9 @@ public class MainActivity extends AppCompatActivity
 
         daily.setOnDailyFinishListener(this);
         daily.setOnPersonChangedListener(this);
+
+        if (ringtonePlayer != null)
+            ringtonePlayer.release();
     }
 
     @Override
@@ -190,7 +199,7 @@ public class MainActivity extends AppCompatActivity
 
     private void setNextButton(boolean enabled) {
         next.setEnabled(enabled);
-        next.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_playback_forw));
+        next.setText(FAST_FORWARD_ICON);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,7 +219,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setRestartButton() {
-        next.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_autorenew));
+        next.setText(RESTART_ICON);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,7 +235,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setStartButton(boolean enabled) {
-        start.setText(CMD_PLAY);
+        start.setText(PLAY_ICON);
         start.setEnabled(enabled);
         start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,7 +254,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setResumeButton(boolean enabled) {
-        start.setText(CMD_REPLAY);
+        start.setText(REPLAY_ICON);
         start.setEnabled(enabled);
         start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,7 +272,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setPauseButton(boolean enabled) {
-        pause.setText(CMD_PAUSE);
+        pause.setText(PAUSE_ICON);
         pause.setEnabled(enabled);
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,7 +290,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setResetButton(boolean enabled) {
-        pause.setText(CMD_STOP);
+        pause.setText(STOP_ICON);
         pause.setEnabled(enabled);
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -337,6 +346,10 @@ public class MainActivity extends AppCompatActivity
                 totalTime += bufferTime * peopleAmount;
                 break;
             }
+            case 2: {
+                bufferType = BufferType.None;
+                bufferTime = 0;
+            }
             default: break;
         }
 
@@ -355,7 +368,7 @@ public class MainActivity extends AppCompatActivity
         daily.reset();
         setStartButton(true);
         setPauseButton(false);
-        next.setEnabled(false);
+        setNextButton(false);
     }
 
     public void launchSettings(MenuItem item) {
@@ -420,9 +433,12 @@ public class MainActivity extends AppCompatActivity
             dildo.vibrate(400);
         }
 
-        Uri notification = Uri.parse(preferences.getString("ringtone_sound", ""));
-        if(ringtonePlayer != null) {
-            ringtonePlayer.release(); }
+        String uri = preferences.getString("ringtone_sound", "");
+        log("Creating media player with uri: " + uri);
+        Uri notification = Uri.parse(uri);
+        if (ringtonePlayer != null)
+            ringtonePlayer.release();
+        
         ringtonePlayer = MediaPlayer.create(this, notification);
         ringtonePlayer.start();
     }
