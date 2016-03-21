@@ -113,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/person_timer"
                     android:text="0:00"
-                    android:textSize="100sp"
+                    android:textSize="75dp"
                     android:gravity="center"
                     android:layout_below="@+id/main_timer"
                     android:layout_alignParentStart="false"
