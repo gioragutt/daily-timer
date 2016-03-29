@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity
         db = new TinyDB(this);
         initializeSettings();
 
+        log("THIS IS onCreate OF MAIN ACTIVITY");
         log("Speaking time : " + Time.fromLong(speakingTime).toString());
         log("Total time : " + Time.fromLong(totalTime).toString());
         log("Buffer time : " + Time.fromLong(bufferTime).toString());
@@ -156,6 +157,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
+        performResume();
         super.onResume();
     }
 
@@ -192,6 +194,10 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**************************************
+     *          BUTTON CLICKS             *
+     **************************************/
 
     private void setNextButton(boolean enabled) {
         next.setEnabled(enabled);
@@ -305,6 +311,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeSettings() {
+        log("initializeSettings");
         people = new ArrayList<>();
         int peopleAmount = 0;
 
