@@ -65,4 +65,5 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="positive_default_timer">0:00</string>
     <string name="negative_default_timer">-0:00</string>
+    <string name="title_activity_update_team">UpdateTeamActivity</string>
 </resources>

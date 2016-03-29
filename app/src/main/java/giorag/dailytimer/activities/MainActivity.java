@@ -29,14 +29,12 @@ import giorag.dailytimer.interfaces.OnDailyFinishListener;
 import giorag.dailytimer.R;
 import giorag.dailytimer.enums.BufferType;
 import giorag.dailytimer.interfaces.OnPersonChangedListener;
-import giorag.dailytimer.interfaces.TeamNamesEditDialogListener;
 import giorag.dailytimer.TinyDB;
 import giorag.dailytimer.modals.Person;
 import giorag.dailytimer.modals.Time;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        TeamNamesEditDialogListener, OnDailyFinishListener, OnPersonChangedListener
+        implements NavigationView.OnNavigationItemSelectedListener, OnDailyFinishListener, OnPersonChangedListener
 {
     public static final String PLAY_ICON = "{cmd-play}";
     public static final String REPLAY_ICON = "{cmd-replay}";
@@ -66,12 +64,10 @@ public class MainActivity extends AppCompatActivity
     ArrayList<Person> people;
     Vibrator dildo;
 
-    @Override
-    public void onPersonsListUpdate(ArrayList<Person> people) {
-        this.people = people;
+    private void performResume()
+    {
+        initializeSettings();
         ArrayList<Person> availablePeople = getAvailablePeople();
-
-        initializeTimerTime(availablePeople.size());
         initializeDaily(availablePeople);
         initializeViews();
     }
@@ -313,7 +309,7 @@ public class MainActivity extends AppCompatActivity
         int peopleAmount = 0;
 
         try {
-            ArrayList<Object> objects = db.getListObject(TeamNamesEditDialog.PEOPLE, Person.class);
+            ArrayList<Object> objects = db.getListObject(UpdateTeamActivity.PEOPLE, Person.class);
             for (Object obj : objects) {
                 Person p = (Person) obj;
                 people.add(p);
@@ -380,31 +376,21 @@ public class MainActivity extends AppCompatActivity
         startActivity(settings);
     }
 
-    private void showDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        TeamNamesEditDialog editNamesDialog = new TeamNamesEditDialog();
-        editNamesDialog.show(fm, "fragment_edit_names");
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera)
-            showDialog();
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
+        if (id == R.id.nav_team_list) {
+            Intent intent = new Intent(this, UpdateTeamActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else if (id == R.id.nav_daily_timer) {
+            // already in daily timer activity,
+            // do nothing
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
