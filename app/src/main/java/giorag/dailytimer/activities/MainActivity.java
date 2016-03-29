@@ -331,8 +331,12 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeTimerTime(int peopleAmount) {
         speakingTime = Long.parseLong(preferences.getString("speaking_time", "30")) * 1000;
-        int transitionBuffer = Integer.parseInt(preferences.getString("transition_buffer", "0"));
+        int transitionBuffer = Integer.parseInt(preferences.getString("transition_buffer", "2"));
         bufferTime = Long.parseLong(preferences.getString("transition_buffer_time", "5")) * 1000;
+        boolean bufferEnabled = preferences.getBoolean("buffer_enabled", false);
+
+        if (!bufferEnabled)
+            transitionBuffer = 2;
 
         long totalTime = peopleAmount * speakingTime;
         switch (transitionBuffer) {

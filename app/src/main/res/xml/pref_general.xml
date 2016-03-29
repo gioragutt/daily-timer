@@ -9,8 +9,14 @@
         android:singleLine="true"
         android:title="@string/pref_title_speaking_time"/>
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="buffer_enabled"
+        android:title="@string/pref_title_buffer_enabled"/>
+
     <ListPreference
         android:defaultValue="0"
+        android:dependency="buffer_enabled"
         android:entries="@array/pref_transition_buffers_titles"
         android:entryValues="@array/pref_transition_buffers_values"
         android:key="transition_buffer"
@@ -21,6 +27,7 @@
     <EditTextPreference
         android:defaultValue="@integer/pref_default_transition_buffer_time"
         android:inputType="time"
+        android:dependency="buffer_enabled"
         android:key="transition_buffer_time"
         android:maxLines="1"
         android:selectAllOnFocus="true"

@@ -17,6 +17,7 @@
         based on your message history
     </string>
 
+    <string name="pref_title_buffer_enabled">Enable Buffer</string>
     <string name="pref_title_speaking_time">Speaking Time (Seconds)</string>
     <string name="pref_title_transition_buffer_time">Buffer Time (Seconds)</string>
     <string name="pref_title_people_amount">Team Size</string>
@@ -25,12 +26,10 @@
     <string-array name="pref_transition_buffers_titles">
         <item>Team Buffer</item>
         <item>Individual Buffer</item>
-        <item>No Buffer</item>
     </string-array>
     <string-array name="pref_transition_buffers_values">
         <item>0</item>
         <item>1</item>
-        <item>2</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->
@@ -60,7 +59,6 @@
     <string name="pref_header_notifications">Alarm</string>
 
     <string name="pref_title_new_message_notifications">Play Alarm</string>
-
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
 
