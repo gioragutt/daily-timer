@@ -3,6 +3,7 @@ package giorag.dailytimer;
 import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ public class Daily {
     TextView bufferTimer;
 
     TinyDB db;
+    Context context;
+    boolean shouldNotifyNextPerson;
 
     public Daily(Time total,
                  Time personal,
@@ -64,7 +67,9 @@ public class Daily {
         this.bufferTimer = bufferTimer;
         this.participantLabel = participantLabel;
         this.runningState = RunningState.Default;
+        this.context = context;
         this.db = new TinyDB(context);
+        this.shouldNotifyNextPerson = true;
 
         log("Constructing Daily!");
         log("Total : " + total.toString());
@@ -154,6 +159,14 @@ public class Daily {
 
     private void onPersonalTick(long remaining) {
         personalTimer.setText(Time.fromLong(remaining).toString());
+
+        if (remaining <= 15000 && shouldNotifyNextPerson)
+        {
+            shouldNotifyNextPerson = false;
+            if (currentPerson < people.size() - 1) {
+                Toast.makeText(context, "Next up: " + people.get(currentPerson + 1).name, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void onTotalTick(long remaining) {
@@ -165,6 +178,7 @@ public class Daily {
     }
 
     private void onPersonalFinish() {
+        shouldNotifyNextPerson = true;
         if (!isNotLastPerson())
             finish();
         else if (bufferCountdown.getRemaining() > 0)
