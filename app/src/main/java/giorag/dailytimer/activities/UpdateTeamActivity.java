@@ -4,11 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -43,7 +43,6 @@ public class UpdateTeamActivity extends AppCompatActivity implements NavigationV
     private RecyclerView namesList;
     private FloatingActionButton addName;
     private TeamNamesAdapter adapter;
-    private boolean isRandomized;
     private Button undoRandomizeButton;
     private TinyDB db;
 
@@ -114,7 +113,7 @@ public class UpdateTeamActivity extends AppCompatActivity implements NavigationV
     private void update(boolean shouldSaveOrder) {
         savePeopleList();
 
-        if(shouldSaveOrder)
+        if (shouldSaveOrder)
             savePeopleOrderList();
     }
 
@@ -194,7 +193,6 @@ public class UpdateTeamActivity extends AppCompatActivity implements NavigationV
 
     public void randomizeList(View view) {
         undoRandomizeButton.setEnabled(true);
-        isRandomized = true;
 
         ArrayList<Person> randomizedOrderPeople = new ArrayList<>();
 
@@ -222,6 +220,41 @@ public class UpdateTeamActivity extends AppCompatActivity implements NavigationV
         }
 
         return indexes;
+    }
+
+    public void showInfoDialog(View view) {
+        StringBuilder builder = new StringBuilder();
+        String[] messages = {
+                "Update your team composition\n",
+                " === Usage === ",
+                " - Add a team member using the (+) button",
+                " - Remove a team member by swiping their name",
+                " - Update their presence by clicking on their name",
+                " - Change the order by long-pressing and moving a person's name",
+                " === Member Presence ===",
+                " - Member presence indicates whether a team member is attending the daily",
+                " - When someone is not present, they will not be counted in the daily timer",
+                " === Randomizing Order ===",
+                " - Pressing the (RANDOM) button will rearrange the team order randomly",
+                " - Pressing (UNDO) returns the order to the way it was before the first randomization",
+                " - Manually changing the order after randomizing will disable the (UNDO) button"
+        };
+
+        for (String line : messages) {
+            builder.append(line).append("\n");
+        }
+
+        Log.i("UpdateTeam", "creating info dialog");
+        new AlertDialog.Builder(this)
+                .setTitle("Info")
+                .setMessage(builder.toString())
+                .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
     }
 
     class TeamNamesAdapter extends RecyclerView.Adapter<TeamNamesAdapter.ViewHolder>
@@ -296,7 +329,7 @@ public class UpdateTeamActivity extends AppCompatActivity implements NavigationV
             }
             notifyItemMoved(fromPosition, toPosition);
             update(true);
-            isRandomized = false;
+            undoRandomizeButton.setEnabled(false);
         }
 
         @Override
