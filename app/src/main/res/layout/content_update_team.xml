@@ -15,34 +15,37 @@
     tools:context="giorag.dailytimer.activities.UpdateTeamActivity"
     tools:showIn="@layout/app_bar_update_team">
 
-    <RelativeLayout
+    <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:gravity="right">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="random"
-            android:id="@+id/team_names_randomize"
-            android:layout_alignParentEnd="false"
-            android:onClick="randomizeList"
-            android:drawableLeft="@drawable/ic_action_playback_schuffle"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="false"/>
+            android:text="info"
+            android:id="@+id/team_names_info"
+            android:onClick="showInfoDialog"
+            android:drawableLeft="@drawable/ic_action_info"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="undo"
             android:id="@+id/team_names_undo_randomize"
-            android:layout_alignParentTop="true"
             android:onClick="undoRandomize"
-            android:layout_toStartOf="@+id/team_names_randomize"
             android:drawableLeft="@drawable/ic_action_undo"/>
-    </RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="random"
+            android:id="@+id/team_names_randomize"
+            android:onClick="randomizeList"
+            android:drawableLeft="@drawable/ic_action_playback_schuffle"
+            />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/team_names_list"
