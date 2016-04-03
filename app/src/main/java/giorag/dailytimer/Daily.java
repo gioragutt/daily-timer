@@ -1,6 +1,8 @@
 package giorag.dailytimer;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +15,7 @@ import giorag.dailytimer.enums.BufferType;
 import giorag.dailytimer.enums.RunningState;
 import giorag.dailytimer.interfaces.OnDailyFinishListener;
 import giorag.dailytimer.interfaces.OnPersonChangedListener;
+import giorag.dailytimer.modals.DailyStatistics;
 import giorag.dailytimer.modals.Person;
 import giorag.dailytimer.modals.Time;
 
@@ -21,6 +24,7 @@ public class Daily {
     Time total;
     Time personal;
     Time buffer;
+    DailyStatistics summery;
     BufferType bufferType;
 
     DailyCountdown totalCountdown;
@@ -71,6 +75,8 @@ public class Daily {
         this.db = new TinyDB(context);
         this.shouldNotifyNextPerson = true;
 
+        resetSummery();
+
         log("Constructing Daily!");
         log("Total : " + total.toString());
         log("Personal : " + personal.toString());
@@ -82,6 +88,15 @@ public class Daily {
 
         initializeCountdownTimers();
         setParticipant(currentPerson);
+    }
+
+    private void resetSummery() {
+        this.summery = new DailyStatistics(total, personal, getTotalBufferTime(buffer, people.size(), bufferType),
+                people);
+    }
+
+    private Time getTotalBufferTime(Time buffer,  int peopleAmount, BufferType bufferType) {
+        return Time.fromLong(bufferType == BufferType.Individual ? buffer.toLong() * peopleAmount : buffer.toLong());
     }
 
     private void log(String message) {
@@ -227,7 +242,13 @@ public class Daily {
     }
 
     public void finish() {
+        log("finish()");
+        log("totalCountdown remaining long : " + totalCountdown.getRemainingLong());
+        summery.personFinished(personalCountdown.getUsedTime(), personalCountdown.getRemainingTime());
+        showSummaryDialog();
+
         reset();
+        resetSummery();
         totalTimer.setText("Done!");
         personalTimer.setText("Done!");
         bufferTimer.setText("Done!");
@@ -236,6 +257,17 @@ public class Daily {
         if (onDailyFinishListener != null)
             onDailyFinishListener.onFinish();
 
+    }
+
+    private void showSummaryDialog() {
+        new AlertDialog.Builder(context).setTitle("Daily summery")
+                .setMessage(summery.toString())
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
     }
 
     private void setParticipant(int index) {
@@ -284,6 +316,7 @@ public class Daily {
         setOnDailyFinishListener(main);
         setOnPersonChangedListener(main);
         runningState.restore(main);
+        summery = (DailyStatistics)db.getObject("summery", DailyStatistics.class);
 
         log("=================================");
         log("Constructing Daily!");
@@ -312,6 +345,11 @@ public class Daily {
         db.putBoolean("bufferCountdown-running", bufferCountdown.isRunning);
         db.putLong("totalCountdown", totalCountdown.getRemainingLong());
         db.putBoolean("totalCountdown-running", totalCountdown.isRunning);
+        db.putObject("summery", summery);
+
+        bufferCountdown.cancel();
+        totalCountdown.cancel();
+
     }
 
     public void start() {
@@ -339,12 +377,18 @@ public class Daily {
     }
 
     public void next() {
+        summery.personFinished(personalCountdown.getUsedTime(), personalCountdown.getRemainingTime());
+        totalCountdown = totalCountdown.reset(totalCountdown.getRemainingLong() - personalCountdown.getRemainingLong(), runningState == RunningState.Running);
+
         currentPerson++;
         setParticipant(currentPerson);
         procOnPersonChanged();
+
         personalCountdown = personalCountdown.reset(personal.toLong(), runningState == RunningState.Running);
+
         personalCountdown = personalCountdown.reset((long)Math.floor((double) personalCountdown.getRemainingLong()), runningState == RunningState.Running);
         totalCountdown = totalCountdown.reset((long)Math.floor((double)totalCountdown.getRemainingLong()), runningState == RunningState.Running);
+
         log("next - currentPerson [ " + currentPerson + " " + people.get(currentPerson).name + " ] runningState [ " + runningState.toString() + " ]");
 
         switch (bufferType) {

@@ -11,6 +11,7 @@ public class DailyCountdown extends CountDownTimer {
     private OnTickListener onTickListener;
     private OnFinishListener onFinishListener;
     public boolean isRunning;
+    private long total;
 
     public void setOnFinishListener(OnFinishListener onFinish) {
         this.onFinishListener = onFinish;
@@ -23,6 +24,7 @@ public class DailyCountdown extends CountDownTimer {
     public DailyCountdown(Time time) {
         super(time.toLong(), INTERVAL);
 
+        this.total = time.toLong();
         this.remaining = time.toLong();
         this.isRunning = false;
     }
@@ -51,6 +53,10 @@ public class DailyCountdown extends CountDownTimer {
 
     public long getRemainingLong() { return remaining; }
     public Time getRemainingTime() { return Time.fromLong(remaining); }
+
+    //public long getTotal() { return total; }
+
+    public Time getUsedTime() { return Time.fromLong(total - remaining); }
 
     interface OnTickListener {
         void onTick(long remaining);
