@@ -310,8 +310,8 @@ public class Daily {
         db.putBoolean("personalCountdown-running", personalCountdown.isRunning);
         db.putLong("bufferCountdown", bufferCountdown.getRemainingLong());
         db.putBoolean("bufferCountdown-running", bufferCountdown.isRunning);
-        db.putLong("bufferCountdown", bufferCountdown.getRemaining());
-        db.putBoolean("bufferCountdown-running", bufferCountdown.isRunning);
+        db.putLong("totalCountdown", totalCountdown.getRemainingLong());
+        db.putBoolean("totalCountdown-running", totalCountdown.isRunning);
     }
 
     public void start() {
