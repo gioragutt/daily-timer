@@ -49,9 +49,8 @@ public class DailyCountdown extends CountDownTimer {
         return newCountdown;
     }
 
-    public long getRemaining() {
-        return remaining;
-    }
+    public long getRemainingLong() { return remaining; }
+    public Time getRemainingTime() { return Time.fromLong(remaining); }
 
     interface OnTickListener {
         void onTick(long remaining);

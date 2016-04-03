@@ -152,9 +152,9 @@ public class Daily {
     }
 
     private void updateTimerLabels() {
-        totalTimer.setText(Time.fromLong(totalCountdown.getRemaining()).toString());
-        personalTimer.setText(Time.fromLong(personalCountdown.getRemaining()).toString());
-        bufferTimer.setText("-" + Time.fromLong(bufferCountdown.getRemaining()).toString());
+        totalTimer.setText(Time.fromLong(totalCountdown.getRemainingLong()).toString());
+        personalTimer.setText(Time.fromLong(personalCountdown.getRemainingLong()).toString());
+        bufferTimer.setText("-" + Time.fromLong(bufferCountdown.getRemainingLong()).toString());
     }
 
     private void onPersonalTick(long remaining) {
@@ -181,7 +181,7 @@ public class Daily {
         shouldNotifyNextPerson = true;
         if (!isNotLastPerson())
             finish();
-        else if (bufferCountdown.getRemaining() > 0)
+        else if (bufferCountdown.getRemainingLong() > 0)
             bufferCountdown.start();
         else
             next();
@@ -306,9 +306,9 @@ public class Daily {
         db.putListObject("people", new ArrayList<Object>(people));
         db.putString("runningState", runningState.toString());
 
-        db.putLong("personalCountdown", personalCountdown.getRemaining());
+        db.putLong("personalCountdown", personalCountdown.getRemainingLong());
         db.putBoolean("personalCountdown-running", personalCountdown.isRunning);
-        db.putLong("bufferCountdown", bufferCountdown.getRemaining());
+        db.putLong("bufferCountdown", bufferCountdown.getRemainingLong());
         db.putBoolean("bufferCountdown-running", bufferCountdown.isRunning);
         db.putLong("bufferCountdown", bufferCountdown.getRemaining());
         db.putBoolean("bufferCountdown-running", bufferCountdown.isRunning);
@@ -322,9 +322,9 @@ public class Daily {
 
     public void pause() {
         runningState = RunningState.Paused;
-        totalCountdown = totalCountdown.reset(totalCountdown.getRemaining(), false);
-        personalCountdown = personalCountdown.reset(personalCountdown.getRemaining(), false);
-        bufferCountdown = bufferCountdown.reset(bufferCountdown.getRemaining(), false);
+        totalCountdown = totalCountdown.reset(totalCountdown.getRemainingLong(), false);
+        personalCountdown = personalCountdown.reset(personalCountdown.getRemainingLong(), false);
+        bufferCountdown = bufferCountdown.reset(bufferCountdown.getRemainingLong(), false);
     }
 
     public void reset() {
@@ -350,7 +350,7 @@ public class Daily {
                 bufferCountdown = bufferCountdown.reset(buffer.toLong(), false);
                 break;
             default:
-                bufferCountdown = bufferCountdown.reset(bufferCountdown.getRemaining(), false);
+                bufferCountdown = bufferCountdown.reset(bufferCountdown.getRemainingLong(), false);
                 break;
         }
 
