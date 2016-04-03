@@ -343,6 +343,8 @@ public class Daily {
         setParticipant(currentPerson);
         procOnPersonChanged();
         personalCountdown = personalCountdown.reset(personal.toLong(), runningState == RunningState.Running);
+        personalCountdown = personalCountdown.reset((long)Math.floor((double) personalCountdown.getRemainingLong()), runningState == RunningState.Running);
+        totalCountdown = totalCountdown.reset((long)Math.floor((double)totalCountdown.getRemainingLong()), runningState == RunningState.Running);
         log("next - currentPerson [ " + currentPerson + " " + people.get(currentPerson).name + " ] runningState [ " + runningState.toString() + " ]");
 
         switch (bufferType) {
