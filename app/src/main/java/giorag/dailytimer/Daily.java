@@ -244,7 +244,7 @@ public class Daily {
     public void finish() {
         log("finish()");
         log("totalCountdown remaining long : " + totalCountdown.getRemainingLong());
-        summery.personFinished(personalCountdown.getUsedTime(), personalCountdown.getRemainingTime());
+        summery.personFinished(people.get(currentPerson), personalCountdown.getUsedTime(), personalCountdown.getRemainingTime());
         showSummaryDialog();
 
         reset();
@@ -377,7 +377,7 @@ public class Daily {
     }
 
     public void next() {
-        summery.personFinished(personalCountdown.getUsedTime(), personalCountdown.getRemainingTime());
+        summery.personFinished(people.get(currentPerson), personalCountdown.getUsedTime(), personalCountdown.getRemainingTime());
         totalCountdown = totalCountdown.reset(totalCountdown.getRemainingLong() - personalCountdown.getRemainingLong(), runningState == RunningState.Running);
 
         currentPerson++;
