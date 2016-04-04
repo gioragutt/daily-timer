@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFinish() {
+    public void onDailyFinish() {
         playRingtone();
         setRestartButton();
         setStartButton(false);
