@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -36,33 +35,41 @@ import giorag.dailytimer.modals.Time;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnDailyFinishListener, OnPersonChangedListener
 {
-    public static final String PLAY_ICON = "{cmd-play}";
-    public static final String REPLAY_ICON = "{cmd-replay}";
-    public static final String PAUSE_ICON = "{cmd-pause}";
-    public static final String STOP_ICON = "{cmd-stop}";
-    public static final String FAST_FORWARD_ICON = "{cmd-fast-forward}";
-    public static final String RESTART_ICON = "{cmd-repeat}";
+    public static final String ICON_PLAY = "{cmd-play}";
+    public static final String ICON_REPLAY = "{cmd-replay}";
+    public static final String ICON_PAUSE = "{cmd-pause}";
+    public static final String ICON_STOP = "{cmd-stop}";
+    public static final String ICON_FAST_FORWARD = "{cmd-fast-forward}";
+    public static final String ICON_RESTART = "{cmd-repeat}";
 
+    public static final String KEY_TRANSITION_BUFFER = "transition_buffer";
+    public static final String KEY_SPEAKING_TIME = "speaking_time";
+    public static final String KEY_TRANSITION_BUFFER_TIME = "transition_buffer_time";
+    public static final String KEY_BUFFER_ENABLED = "buffer_enabled";
+    public static final String KEY_SHOULD_PLAY_RINGTONE = "should_play_ringtone";
+    public static final String KEY_SHOULD_VIBRATE_ON_RINGTONE = "should_vibrate_on_ringtone";
+    public static final String KEY_RINGTONE_SOUND = "ringtone_sound";
 
     long totalTime;
     long speakingTime;
     long bufferTime;
     BufferType bufferType;
+    TinyDB db;
+    Daily daily;
+    SharedPreferences preferences;
+    ArrayList<Person> people;
 
     Button pause;
     Button start;
     Button next;
-    MediaPlayer ringtonePlayer;
 
     TextView totalTimer;
     TextView personalTimer;
     TextView bufferTimer;
     TextView participantLabel;
-    TinyDB db;
-    Daily daily;
-    SharedPreferences preferences;
-    ArrayList<Person> people;
-    Vibrator dildo;
+
+    MediaPlayer ringtonePlayer;
+    Vibrator vibrator;
 
     private void performResume()
     {
@@ -93,7 +100,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         log("onRestoreInstanceState");
-        BufferType bufferType = Daily.convert(Integer.parseInt(preferences.getString("transition_buffer", "0")));
+        BufferType bufferType = Daily.convert(Integer.parseInt(preferences.getString(KEY_TRANSITION_BUFFER, "0")));
         daily.restoreState(this, bufferType, totalTimer, personalTimer, bufferTimer, participantLabel);
         super.onRestoreInstanceState(savedInstanceState);
     }
@@ -201,7 +208,7 @@ public class MainActivity extends AppCompatActivity
 
     private void setNextButton(boolean enabled) {
         next.setEnabled(enabled);
-        next.setText(FAST_FORWARD_ICON);
+        next.setText(ICON_FAST_FORWARD);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,7 +228,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setRestartButton() {
-        next.setText(RESTART_ICON);
+        next.setText(ICON_RESTART);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -237,7 +244,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setStartButton(boolean enabled) {
-        start.setText(PLAY_ICON);
+        start.setText(ICON_PLAY);
         start.setEnabled(enabled);
         start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,7 +263,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setResumeButton(boolean enabled) {
-        start.setText(REPLAY_ICON);
+        start.setText(ICON_REPLAY);
         start.setEnabled(enabled);
         start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,7 +281,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setPauseButton(boolean enabled) {
-        pause.setText(PAUSE_ICON);
+        pause.setText(ICON_PAUSE);
         pause.setEnabled(enabled);
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -292,7 +299,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setResetButton(boolean enabled) {
-        pause.setText(STOP_ICON);
+        pause.setText(ICON_STOP);
         pause.setEnabled(enabled);
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -333,10 +340,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeTimerTime(int peopleAmount) {
-        speakingTime = Long.parseLong(preferences.getString("speaking_time", "30")) * 1000;
-        int transitionBuffer = Integer.parseInt(preferences.getString("transition_buffer", "2"));
-        bufferTime = Long.parseLong(preferences.getString("transition_buffer_time", "5")) * 1000;
-        boolean bufferEnabled = preferences.getBoolean("buffer_enabled", false);
+        speakingTime = Long.parseLong(preferences.getString(KEY_SPEAKING_TIME, "30")) * 1000;
+        int transitionBuffer = Integer.parseInt(preferences.getString(KEY_TRANSITION_BUFFER, "2"));
+        bufferTime = Long.parseLong(preferences.getString(KEY_TRANSITION_BUFFER_TIME, "5")) * 1000;
+        boolean bufferEnabled = preferences.getBoolean(KEY_BUFFER_ENABLED, false);
 
         if (!bufferEnabled)
             transitionBuffer = 2;
@@ -419,20 +426,26 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void playRingtone() {
-        boolean shouldPlayRingtone = preferences.getBoolean("should_play_ringtone", false);
+        boolean shouldPlayRingtone = preferences.getBoolean(KEY_SHOULD_PLAY_RINGTONE, false);
 
-        if(!shouldPlayRingtone)
+        if (!shouldPlayRingtone)
             return;
 
-        boolean shouldVibrate = preferences.getBoolean("should_vibrate_on_ringtone", false);
-        if(shouldVibrate) {
-            dildo = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            dildo.vibrate(400);
+        boolean shouldVibrate = preferences.getBoolean(KEY_SHOULD_VIBRATE_ON_RINGTONE, false);
+
+        if (shouldVibrate) {
+            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(700);
         }
 
-        String uri = preferences.getString("ringtone_sound", "");
+        String uri = preferences.getString(KEY_RINGTONE_SOUND, "");
+
+        if (uri.isEmpty())
+            return;
+
         log("Creating media player with uri: " + uri);
         Uri notification = Uri.parse(uri);
+
         if (ringtonePlayer != null)
             ringtonePlayer.release();
         
