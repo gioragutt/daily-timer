@@ -255,7 +255,7 @@ public class Daily {
         participantLabel.setText("All done!");
 
         if (onDailyFinishListener != null)
-            onDailyFinishListener.onFinish();
+            onDailyFinishListener.onDailyFinish();
 
     }
 
