@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import java.util.LinkedHashMap;
+
 /**
  * Created by GioraPC on 03/04/2016.
  */
@@ -17,34 +19,64 @@ public class DailyStatistics implements Serializable {
     Time personalAllocated;
     Time bufferAllocated;
     Time bufferUsed;
-    ArrayList<Person> people;
+    LinkedHashMap<Person, PersonTimeStatistics> peopleTiming;
+
+    class PersonTimeStatistics {
+        public Time used;
+        public Time bufferUsed;
+        public Time skipped;
+
+        public PersonTimeStatistics(Time used, Time bufferUsed, Time skipped) {
+            this.used = used;
+            this.bufferUsed = bufferUsed;
+            this.skipped = skipped;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("[ U ").append(used.toLongString())
+                    .append(" , B ").append(bufferUsed.toLongString())
+                    .append(" , S ").append(skipped.toLongString())
+                    .append(" ]");
+            return builder.toString();
+        }
+    }
 
     public DailyStatistics(Time totalAllocated, Time personalAllocated, Time bufferAllocated, ArrayList<Person> people) {
         this.dateOfDaily = new Date();
         this.totalAllocated = totalAllocated;
         this.personalAllocated = personalAllocated;
         this.bufferAllocated = bufferAllocated;
-        this.people = people;
+        peopleTiming = new LinkedHashMap<>();
+        for (Person p : people) {
+            peopleTiming.put(p, new PersonTimeStatistics(Time.ZERO, Time.ZERO, Time.ZERO));
+        }
 
         this.actualUsed = Time.ZERO;
         this.skipped = Time.ZERO;
         this.bufferUsed = Time.ZERO;
     }
 
-    public void personFinished(Time used, Time skippedTime) {
+    public void personFinished(Person personThatFinished, Time used, Time skippedTime) {
         actualUsed = actualUsed.add(used);
         skipped = skipped.add(skippedTime);
+
+        PersonTimeStatistics statistics = peopleTiming.get(personThatFinished);
+        statistics.used = used;
+        statistics.skipped = skippedTime;
 
         long usedLong = used.toLong(), personalLong = personalAllocated.toLong();
 
         if (usedLong > personalLong) {
             Time buffer = Time.fromLong(usedLong - personalLong);
             bufferUsed = bufferUsed.add(buffer);
+            statistics.bufferUsed = buffer;
         }
     }
 
     private Time getAverageTime(Time time) {
-        return Time.fromLong(time.toLong() / people.size());
+        return Time.fromLong(time.toLong() / peopleTiming.size());
     }
 
     @Override
@@ -56,11 +88,12 @@ public class DailyStatistics implements Serializable {
 
         builder.append("Date dateOfDaily :\n" + formattedDate + "\n\n");
         builder.append("Participants :\n" );
-        for (int i = 0; i < people.size(); ++i) {
-            builder.append("\t" + (i + 1) + " - " + people.get(i).name + "\n");
+        int i = 1;
+        for (Person p : peopleTiming.keySet()) {
+            builder.append("\t").append(i++).append(" - ").append(p.name).append("\n").append(peopleTiming.get(p).toString()).append("\n");
         }
         builder.append("\n");
-        builder.append("int personCount : " + people.size() + "\n");
+        builder.append("int personCount : " + peopleTiming.size() + "\n");
         builder.append("Time totalAllocated : " + totalAllocated.toLongString() + "\n");
         builder.append("Time personalAllocated : " + personalAllocated.toLongString() + "\n");
         builder.append("Time bufferAllocated : " + bufferAllocated.toLongString() + "\n");
