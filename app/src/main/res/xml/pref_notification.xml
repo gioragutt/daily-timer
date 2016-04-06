@@ -24,4 +24,21 @@
         android:key="should_vibrate_on_ringtone"
         android:title="@string/pref_title_vibrate"/>
 
+    <!--<Preference-->
+        <!--android:key="time_of_reminder"-->
+        <!--android:defaultValue="00:00"-->
+        <!--android:summary="Set time in day to send a daily reminder"-->
+        <!--android:title="Reminder" />-->
+
+    <PreferenceCategory
+        android:title="Reminder" >
+        <giorag.dailytimer.TimePickerDialog
+            android:defaultValue="08:00"
+            android:key="time_of_reminder"
+            android:showDefault="true"
+            android:summary="Set time in day to send a daily reminder"
+            android:title="Reminder" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>
