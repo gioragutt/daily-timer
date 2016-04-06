@@ -1,5 +1,6 @@
 package giorag.dailytimer.activities;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,32 +10,32 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 
 import giorag.dailytimer.Daily;
-import giorag.dailytimer.interfaces.OnDailyFinishListener;
 import giorag.dailytimer.R;
-import giorag.dailytimer.enums.BufferType;
-import giorag.dailytimer.interfaces.OnPersonChangedListener;
 import giorag.dailytimer.TinyDB;
+import giorag.dailytimer.enums.BufferType;
+import giorag.dailytimer.interfaces.OnDailyFinishListener;
+import giorag.dailytimer.interfaces.OnPersonChangedListener;
 import giorag.dailytimer.modals.Person;
 import giorag.dailytimer.modals.Time;
+import giorag.dailytimer.services.ReminderService;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnDailyFinishListener, OnPersonChangedListener
-{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnDailyFinishListener, OnPersonChangedListener {
     public static final String ICON_PLAY = "{cmd-play}";
     public static final String ICON_REPLAY = "{cmd-replay}";
     public static final String ICON_PAUSE = "{cmd-pause}";
@@ -71,8 +72,7 @@ public class MainActivity extends AppCompatActivity
     MediaPlayer ringtonePlayer;
     Vibrator vibrator;
 
-    private void performResume()
-    {
+    private void performResume() {
         initializeSettings();
         ArrayList<Person> availablePeople = getAvailablePeople();
         initializeDaily(availablePeople);
@@ -105,12 +105,20 @@ public class MainActivity extends AppCompatActivity
         super.onRestoreInstanceState(savedInstanceState);
     }
 
+    private void cancelReminderNotification() {
+        log("Canceling daily reminder notification if such one exists");
+        NotificationManager mngr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mngr.cancel(ReminderService.REMINDER_NOTIFICATION_ID);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        cancelReminderNotification();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -129,13 +137,13 @@ public class MainActivity extends AppCompatActivity
         log("Total time : " + Time.fromLong(totalTime).toString());
         log("Buffer time : " + Time.fromLong(bufferTime).toString());
 
-        pause = (Button)findViewById(R.id.main_pause);
-        start = (Button)findViewById(R.id.main_start);
-        next = (Button)findViewById(R.id.move_to_next_person);
-        totalTimer = (TextView)findViewById(R.id.main_timer);
-        personalTimer = (TextView)findViewById(R.id.person_timer);
-        bufferTimer = (TextView)findViewById(R.id.buffer_timer);
-        participantLabel = (TextView)findViewById(R.id.current_practicipent_name);
+        pause = (Button) findViewById(R.id.main_pause);
+        start = (Button) findViewById(R.id.main_start);
+        next = (Button) findViewById(R.id.move_to_next_person);
+        totalTimer = (TextView) findViewById(R.id.main_timer);
+        personalTimer = (TextView) findViewById(R.id.person_timer);
+        bufferTimer = (TextView) findViewById(R.id.buffer_timer);
+        participantLabel = (TextView) findViewById(R.id.current_practicipent_name);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,8 +160,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeDaily(ArrayList<Person> availablePeople) {
-        daily = new Daily(Time.fromLong(totalTime), Time.fromLong(speakingTime), Time.fromLong(bufferTime),
-                availablePeople, bufferType, 0, totalTimer, personalTimer, bufferTimer, participantLabel, this);
+        daily = new Daily(Time.fromLong(totalTime), Time.fromLong(speakingTime), Time.fromLong(bufferTime), availablePeople, bufferType, 0,
+                totalTimer, personalTimer, bufferTimer, participantLabel, this);
 
         daily.setOnDailyFinishListener(this);
         daily.setOnPersonChangedListener(this);
@@ -173,8 +181,7 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -203,7 +210,7 @@ public class MainActivity extends AppCompatActivity
 
 
     /**************************************
-     *          BUTTON CLICKS             *
+     * BUTTON CLICKS             *
      **************************************/
 
     private void setNextButton(boolean enabled) {
@@ -331,8 +338,7 @@ public class MainActivity extends AppCompatActivity
                     peopleAmount++;
                 }
             }
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             peopleAmount = 0;
         }
 
@@ -364,7 +370,8 @@ public class MainActivity extends AppCompatActivity
                 bufferType = BufferType.None;
                 bufferTime = 0;
             }
-            default: break;
+            default:
+                break;
         }
 
         this.totalTime = totalTime;
@@ -400,8 +407,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, UpdateTeamActivity.class);
             startActivity(intent);
             finish();
-        }
-        else if (id == R.id.nav_daily_timer) {
+        } else if (id == R.id.nav_daily_timer) {
             // already in daily timer activity,
             // do nothing
         }
@@ -448,7 +454,7 @@ public class MainActivity extends AppCompatActivity
 
         if (ringtonePlayer != null)
             ringtonePlayer.release();
-        
+
         ringtonePlayer = MediaPlayer.create(this, notification);
         ringtonePlayer.start();
     }

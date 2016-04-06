@@ -2,8 +2,12 @@ package giorag.dailytimer.activities;
 
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -18,12 +22,15 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
+import java.util.Calendar;
 import java.util.List;
 
 import giorag.dailytimer.R;
+import giorag.dailytimer.services.ReminderService;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -36,7 +43,9 @@ import giorag.dailytimer.R;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends AppCompatPreferenceActivity {
+public class SettingsActivity extends AppCompatPreferenceActivity implements giorag.dailytimer.TimePickerDialog.Listener {
+
+    giorag.dailytimer.TimePickerDialog timePicker;
 
     /**
      * A preference value change listener that updates the preference's summary
@@ -112,10 +121,38 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference, PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getString(preference.getKey(), ""));
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+
+        timePicker = new giorag.dailytimer.TimePickerDialog(this);
+    }
+
+    @Override
+    public void setTime(String key, int hourOfDay, int minute) {
+//        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+//        SharedPreferences.Editor editor1 = settings.edit();
+//        editor1.putString(key, hourOfDay + ":" + minute);
+//        editor1.commit();
+
+        setAlarm(hourOfDay, minute);
+    }
+
+    private void setAlarm(int hourOfDay, int min) {
+        final AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        final Intent i = new Intent(this, ReminderService.class);
+        final PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+        am.cancel(pi);
+
+        final Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        cal.set(Calendar.MINUTE, min);
+        cal.set(Calendar.SECOND, 0);
+
+        Log.i("ReminderAlarm", "Setting timer for " + hourOfDay + ":" + min);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
     }
 
     /**

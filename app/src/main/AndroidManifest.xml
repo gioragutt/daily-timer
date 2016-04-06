@@ -12,6 +12,12 @@
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
+
+        <service
+            android:name=".services.ReminderService"
+            android:exported="true"
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE"/>
+
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
@@ -22,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -30,6 +37,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity"/>
         </activity>
+
         <activity
             android:name=".activities.UpdateTeamActivity"
             android:label="@string/title_activity_update_team"
