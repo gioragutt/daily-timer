@@ -25,6 +25,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.List;
@@ -132,11 +133,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements gio
 
     @Override
     public void setTime(String key, int hourOfDay, int minute) {
-//        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-//        SharedPreferences.Editor editor1 = settings.edit();
-//        editor1.putString(key, hourOfDay + ":" + minute);
-//        editor1.commit();
-
         setAlarm(hourOfDay, minute);
     }
 
@@ -151,8 +147,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements gio
         cal.set(Calendar.MINUTE, min);
         cal.set(Calendar.SECOND, 0);
 
-        Log.i("ReminderAlarm", "Setting timer for " + hourOfDay + ":" + min);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
+        String msg = "Daily reminder set to " + hourOfDay + ":" + min;
+        Log.i("ReminderAlarm", msg);
+        Toast.makeText(SettingsActivity.this, msg, Toast.LENGTH_LONG).show();
+        am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis()/* - 60 * 1000*/, AlarmManager.INTERVAL_DAY, pi);
     }
 
     /**
