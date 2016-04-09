@@ -3,4 +3,5 @@
     <integer name="pref_default_speaking_time">30</integer>
     <integer name="pref_default_people_amount">4</integer>
     <integer name="pref_default_transition_buffer_time">5</integer>
+
 </resources>

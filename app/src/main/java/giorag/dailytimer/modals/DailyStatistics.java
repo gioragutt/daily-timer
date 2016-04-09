@@ -21,7 +21,8 @@ public class DailyStatistics implements Serializable {
     Time bufferUsed;
     LinkedHashMap<Person, PersonTimeStatistics> peopleTiming;
 
-    class PersonTimeStatistics {
+
+    class PersonTimeStatistics implements Serializable {
         public Time used;
         public Time bufferUsed;
         public Time skipped;
@@ -42,6 +43,8 @@ public class DailyStatistics implements Serializable {
             return builder.toString();
         }
     }
+
+
 
     public DailyStatistics(Time totalAllocated, Time personalAllocated, Time bufferAllocated, ArrayList<Person> people) {
         this.dateOfDaily = new Date();

@@ -8,11 +8,21 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+
+import java.nio.channels.CancelledKeyException;
+import java.util.Calendar;
+import java.util.Set;
+
 import giorag.dailytimer.R;
 import giorag.dailytimer.activities.MainActivity;
+import giorag.dailytimer.preferences.NotificationsPreferenceHelper;
 
 public class ReminderService extends Service {
     private NotificationManager mNM;
+
+    NotificationsPreferenceHelper prefs;
+
+    private void log(String msg) { Log.i("ReminderService", msg); }
 
     // Unique Identification Number for the Notification.
     // We use it on Notification start, and to cancel it.
@@ -33,6 +43,7 @@ public class ReminderService extends Service {
     public void onCreate() {
         Log.i("ReminderServices", "STARTED");
         mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        prefs = new NotificationsPreferenceHelper(this);
     }
 
     @Override
@@ -57,10 +68,39 @@ public class ReminderService extends Service {
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
 
+    private boolean shouldSendNotification() {
+        prefs.retrievePreferences();
+
+        if (!prefs.shouldNotify()) {
+            log("Notification time reached , but notifications are swithced off");
+            return false;
+        }
+
+        if (!shouldNotifyToday()) {
+            log("Notification time reached , but today is not in the days of reminder!");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean shouldNotifyToday() {
+        int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        Set<String> daysToNotify = prefs.daysToNotify();
+        if (daysToNotify == null)
+            return false;
+        return daysToNotify.contains("" + dayOfWeek);
+    }
+
     /**
      * Show a notification while this service is running.
      */
     private void showNotification() {
+        if (!shouldSendNotification())
+            return;
+
+        log("Showing notification!");
+
         // In this sample, we'll use the same text for the ticker and the expanded notification
         CharSequence text = "Have you performed your daily rituals today?";
 
